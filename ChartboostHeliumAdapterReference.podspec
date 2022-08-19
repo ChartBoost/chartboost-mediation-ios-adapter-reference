@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
   spec.homepage    = 'https://www.chartboost.com/'
   spec.authors     = { 'Chartboost' => 'https://www.chartboost.com/' }
   spec.summary     = 'Helium iOS SDK Reference adapter.'
-  spec.description = ''
+  spec.description = 'Reference Adapters for mediating through Helium. Supported ad formats: Banner, Interstitial, and Rewarded.'
 
   # Source
   spec.module_name  = 'HeliumAdapterReference'
