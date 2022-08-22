@@ -33,7 +33,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// For example, if this adapter is compatible with Helium SDK 3.x.y and partner SDK 1.0.0, and this is its initial release, then its version should be 3.1.0.0.0.
     var adapterVersion: String {
         get {
-            "3.\(ReferenceSdk.getVersion())"
+            "3.\(ReferenceSdk.getVersion()).0"
         }
     }
     
