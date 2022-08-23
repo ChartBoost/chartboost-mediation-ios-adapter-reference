@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   spec.name        = 'ChartboostHeliumAdapterReference'
   spec.version     = '4.1.0.0.0'
   spec.license     = { :type => 'MIT', :file => 'LICENSE.md' }
-  spec.homepage    = 'https://www.chartboost.com/'
+  spec.homepage    = 'https://github.com/ChartBoost/helium-ios-adapter-reference'
   spec.authors     = { 'Chartboost' => 'https://www.chartboost.com/' }
   spec.summary     = 'Helium iOS SDK Reference adapter.'
   spec.description = 'Reference Adapters for mediating through Helium. Supported ad formats: Banner, Interstitial, and Rewarded.'
@@ -17,8 +17,12 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '10.0'
 
   # System frameworks used
-  spec.ios.frameworks = ['UIKit']
+  spec.ios.frameworks = ['Foundation', 'SafariServices', 'UIKit', 'WebKit']
   
   # This adapter compatible with all Helium 4.X versions of the SDK.
   spec.dependency 'ChartboostHelium', '~> 4.0'
+
+  # Replace this with the partner network SDK and version that this adapter is
+  # certified to work with.
+  #spec.dependency 'PartnerNetworkSDK', '1.0.0' 
 end
