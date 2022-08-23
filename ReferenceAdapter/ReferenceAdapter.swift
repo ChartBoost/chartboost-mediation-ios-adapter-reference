@@ -19,37 +19,21 @@ final class ReferenceAdapter: PartnerAdapter {
     
     /// An instance of the Helium logging mechanism.
     var logger: HeliumLogger?
-        
-    /// Return the version of the partner SDK.
-    var partnerSDKVersion: String {
-        get {
-            ReferenceSdk.getVersion()
-        }
-    }
     
-    /// Return the version of the mediation adapter. To determine the version, use the following scheme to indicate compatibility:
+    /// Get the version of the partner SDK.
+    var partnerSDKVersion = ReferenceSdk.getVersion()
+    
+    /// Get the version of the mediation adapter. To determine the version, use the following scheme to indicate compatibility:
     /// [Helium SDK Major Version].[Partner SDK Major Version].[Partner SDK Minor Version].[Partner SDK Patch Version].[Adapter Version]
     ///
-    /// For example, if this adapter is compatible with Helium SDK 3.x.y and partner SDK 1.0.0, and this is its initial release, then its version should be 3.1.0.0.0.
-    var adapterVersion: String {
-        get {
-            "3.\(ReferenceSdk.getVersion()).0"
-        }
-    }
+    /// For example, if this adapter is compatible with Helium SDK 4.x.y and partner SDK 1.0.0, and this is its initial release, then its version should be 4.1.0.0.0.
+    lazy var adapterVersion = "4.\(partnerSDKVersion).0"
     
-    /// Return the internal name of the partner.
-    var partnerIdentifier: String {
-        get {
-            "reference"
-        }
-    }
+    /// Get the internal name of the partner.
+    var partnerIdentifier = "reference"
     
-    /// Return the external/official name of the partner.
-    var partnerDisplayName: String {
-        get {
-            "Reference"
-        }
-    }
+    /// Get the external/official name of the partner.
+    var partnerDisplayName = "Reference"
     
     /// Override this method to initialize the partner SDK so that it's ready to request and display ads.
     /// For simplicity, the current implementation always assumes successes.

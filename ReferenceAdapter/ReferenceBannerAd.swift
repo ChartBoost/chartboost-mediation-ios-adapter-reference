@@ -46,7 +46,7 @@ class ReferenceBannerAd: ReferenceAd {
         self.placement = placement
         self.size = size
         self.viewController = viewController
-        self.logger = HeliumLogger(logsPrefix: "[Reference")
+        self.logger = HeliumLogger(logsPrefix: "[Reference]")
     }
     
     /// Enumeration of the Reference banner ad sizes.
