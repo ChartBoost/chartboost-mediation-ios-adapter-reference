@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   # Source
   spec.module_name  = 'HeliumAdapterReference'
   spec.source       = { :git => 'https://github.com/ChartBoost/helium-ios-adapter-reference.git', :tag => '1.0.0' }
-  spec.source_files = 'Reference/**/*.{h,m,swift}'
+  spec.source_files = 'ReferenceAdapter/**/*.{h,m,swift}'
 
   # Minimum supported versions
   spec.swift_version         = '5.0'
