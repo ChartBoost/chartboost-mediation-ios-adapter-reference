@@ -7,6 +7,7 @@
 
 import Foundation
 import HeliumSdk
+import UIKit
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
@@ -18,7 +19,7 @@ final class ReferenceAdapter: PartnerAdapter {
     }
     
     /// An instance of the Helium logging mechanism.
-    var logger: HeliumLogger?
+    let logger: HeliumLogger
     
     /// Get the version of the partner SDK.
     var partnerSDKVersion = ReferenceSdk.getVersion()
@@ -27,13 +28,13 @@ final class ReferenceAdapter: PartnerAdapter {
     /// [Helium SDK Major Version].[Partner SDK Major Version].[Partner SDK Minor Version].[Partner SDK Patch Version].[Adapter Version]
     ///
     /// For example, if this adapter is compatible with Helium SDK 4.x.y and partner SDK 1.0.0, and this is its initial release, then its version should be 4.1.0.0.0.
-    lazy var adapterVersion = "4.\(partnerSDKVersion).0"
+    let adapterVersion = "4.1.0.0.0"
     
     /// Get the internal name of the partner.
-    var partnerIdentifier = "reference"
+    let partnerIdentifier = "reference"
     
     /// Get the external/official name of the partner.
-    var partnerDisplayName = "Reference"
+    let partnerDisplayName = "Reference"
     
     /// Override this method to initialize the partner SDK so that it's ready to request and display ads.
     /// For simplicity, the current implementation always assumes successes.
@@ -58,21 +59,21 @@ final class ReferenceAdapter: PartnerAdapter {
     /// The current implementation merely logs the GDPR applicability.
     /// - Parameter applies: true if GDPR applies, false otherwise.
     func setGDPRApplies(_ applies: Bool) {
-        logger?.log("The Reference adapter has been notified that GDPR \(applies ? "applies" : "does not apply").")
+        logger.log("The Reference adapter has been notified that GDPR \(applies ? "applies" : "does not apply").")
     }
     
     /// Override this method to notify your partner SDK of the GDPR consent status as determined by the Helium SDK.
     /// The current implementation merely logs the GDPR consent status.
     /// - Parameter status: The user's current GDPR consent status.
     func setGDPRConsentStatus(_ status: GDPRConsentStatus) {
-        logger?.log("The Reference adapter has been notified that the user's GDPR consent status is \(status).")
+        logger.log("The Reference adapter has been notified that the user's GDPR consent status is \(status).")
     }
     
     /// Override this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
     /// The current implementation merely logs the COPPA subjectivity.
     /// - Parameter isSubject: True if the user is subject to COPPA, false otherwise.
     func setUserSubjectToCOPPA(_ isSubject: Bool) {
-        logger?.log("The Reference adapter has been notified that the user is \(isSubject ? "subject" : "not subject") to COPPA.")
+        logger.log("The Reference adapter has been notified that the user is \(isSubject ? "subject" : "not subject") to COPPA.")
     }
     
     /// Override this method to notify your partner SDK of the CCPA privacy String as supplied by the Helium SDK.
@@ -81,7 +82,7 @@ final class ReferenceAdapter: PartnerAdapter {
     ///   - hasGivenConsent: True if the user has given CCPA consent, false otherwise.
     ///   - privacyString: The CCPA privacy String.
     func setCCPAConsent(hasGivenConsent: Bool, privacyString: String?) {
-        logger?.log("The Reference adapter has been notified that the user has \(hasGivenConsent ? "given" : "not given") CCPA consent.")
+        logger.log("The Reference adapter has been notified that the user has \(hasGivenConsent ? "given" : "not given") CCPA consent.")
     }
     
     /// Override this method to make an ad request to the partner SDK for the given ad format.
@@ -93,7 +94,7 @@ final class ReferenceAdapter: PartnerAdapter {
     func load(request: AdLoadRequest, partnerAdDelegate: PartnerAdDelegate, viewController: UIViewController?, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
         switch request.format {
         case .banner:
-            ReferenceBannerAdapter.loadBannerAd(request: request, partnerAdDelegate: partnerAdDelegate, viewController: viewController as? ViewController, completion: { result in
+            ReferenceBannerAdapter.loadBannerAd(request: request, partnerAdDelegate: partnerAdDelegate, viewController: viewController, completion: { result in
                 completion(result)
             })
         case .interstitial, .rewarded:
