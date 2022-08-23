@@ -6,9 +6,10 @@
 //
 
 import Foundation
-import WebKit
-import SafariServices
 import HeliumSdk
+import SafariServices
+import UIKit
+import WebKit
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.
@@ -27,7 +28,7 @@ class ReferenceBannerAd: ReferenceAd {
     var logger: HeliumLogger?
     
     /// The ViewController for ad presentation purposes.
-    var viewController: ViewController?
+    var viewController: UIViewController?
     
     /// Closure for notifying Helium of an ad impression event
     var onAdImpression: (() -> Void)?
@@ -42,7 +43,7 @@ class ReferenceBannerAd: ReferenceAd {
     /// - Parameters:
     ///   - placement: The placement name.
     ///   - size: The banner ad size.
-    init(placement: String, size: Size, viewController: ViewController?) {
+    init(placement: String, size: Size, viewController: UIViewController?) {
         self.placement = placement
         self.size = size
         self.viewController = viewController
