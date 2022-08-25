@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   # Source
   spec.module_name  = 'HeliumAdapterReference'
   spec.source       = { :git => 'https://github.com/ChartBoost/helium-ios-adapter-reference.git', :tag => '4.1.0.0.0' }
-  spec.source_files = 'ReferenceAdapter/**/*.{h,m,swift}'
+  spec.source_files = 'Source/**/*.{h,m,swift}'
 
   # Minimum supported versions
   spec.swift_version         = '5.0'
@@ -22,7 +22,6 @@ Pod::Spec.new do |spec|
   # This adapter compatible with all Helium 4.X versions of the SDK.
   spec.dependency 'ChartboostHelium', '~> 4.0'
 
-  # Replace this with the partner network SDK and version that this adapter is
-  # certified to work with.
+  # Partner network SDK and version that this adapter is certified to work with.
   #spec.dependency 'PartnerNetworkSDK', '1.0.0' 
 end
