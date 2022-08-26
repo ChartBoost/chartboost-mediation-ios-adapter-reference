@@ -14,10 +14,7 @@ import HeliumSdk
 protocol ReferenceAd {
     /// The placement name identifying the current ad.
     var placement: String? {get set}
-    
-    /// The Helium logging mechanism.
-    var logger: HeliumLogger? {get set}
-    
+        
     /// Load the ad with an optional ad markup.
     func load(adm: String?)
     

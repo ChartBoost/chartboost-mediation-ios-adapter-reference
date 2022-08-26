@@ -24,9 +24,6 @@ class ReferenceBannerAd: ReferenceAd {
     /// The banner ad size
     var size: Size?
     
-    /// An instance of the Helium logging mechanism.
-    var logger: HeliumLogger?
-    
     /// The ViewController for ad presentation purposes.
     var viewController: UIViewController?
     
@@ -47,7 +44,6 @@ class ReferenceBannerAd: ReferenceAd {
         self.placement = placement
         self.size = size
         self.viewController = viewController
-        self.logger = HeliumLogger(logsPrefix: "[Reference]")
     }
     
     /// Enumeration of the Reference banner ad sizes.
@@ -61,10 +57,10 @@ class ReferenceBannerAd: ReferenceAd {
     /// - Parameters:
     ///   - adm: The ad markup.
     func load(adm: String?) {
-        logger?.log("Loading a Reference banner ad with ad markup: \(adm ?? "nil").")
+        print("Loading a Reference banner ad with ad markup: \(adm ?? "nil").")
         
         destroy()
-                
+        
         bannerAd = WKWebView()
         bannerAd?.load(URLRequest(url: URL(string: size?.rawValue ?? "")!))
         bannerAd?.addGestureRecognizer(createSingleTap())
@@ -88,8 +84,8 @@ class ReferenceBannerAd: ReferenceAd {
         bannerAd = nil
     }
     
-    ///
-    /// - Returns:
+    /// Create a single tap gesture recognizer for UIView clickthrough purposes.
+    /// - Returns: An instance of UITapGestureRecognizer that is for a single tap gesture.
     private func createSingleTap() -> UITapGestureRecognizer {
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickthrough))
         singleTap.numberOfTapsRequired = 1
@@ -101,10 +97,10 @@ class ReferenceBannerAd: ReferenceAd {
     @objc func clickthrough() {
         /// Show the ad as a webpage via an SFSafariViewController
         guard let url = URL(string: clickThroughUrl) else {
-            logger?.log("Failed to perform clickthrough action due to invalid destination URL.")
+            print("Failed to perform clickthrough action due to invalid destination URL.")
             return
         }
-                
+        
         /// Present the VC after a small delay due to known restrictions by Apple.
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
             UIApplication.shared.keyWindow?.rootViewController?.present(SFSafariViewController(url: url), animated: true, completion: nil)

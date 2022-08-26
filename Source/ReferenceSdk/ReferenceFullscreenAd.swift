@@ -22,9 +22,6 @@ class ReferenceFullscreenAd: ReferenceAd {
     /// Whether the current ad is a rewarded ad
     var isRewardedAd: Bool
     
-    /// An instance of the Helium logging mechanism.
-    var logger: HeliumLogger?
-    
     /// Closure for notifying Helium of an ad impression event
     var onAdImpression: (() -> Void)?
     
@@ -48,7 +45,6 @@ class ReferenceFullscreenAd: ReferenceAd {
         self.placement = placement
         self.fullscreenAdFormat = adFormat
         self.isRewardedAd = adFormat == FullscreenAdFormat.rewarded
-        self.logger = HeliumLogger(logsPrefix: "[Reference]")
     }
     
     /// Enumeration of the Reference fullscreen ad formats.
@@ -74,7 +70,7 @@ class ReferenceFullscreenAd: ReferenceAd {
     /// Attempt to load a fullscreen ad.
     /// In this example, there are no "load" and "destroy" implementations as the fullscreen ad is tied to the SFSafariViewController.
     func load(adm: String?) {
-        logger?.log("Loading a Reference fullscreen ad with ad markup: \(adm ?? "nil").")
+        print("Loading a Reference fullscreen ad with ad markup: \(adm ?? "nil").")
     }
     
     /// Attempt to show the currently loaded fullscreen ad.
@@ -82,7 +78,7 @@ class ReferenceFullscreenAd: ReferenceAd {
         /// Show the ad as a webpage via an SFSafariViewController
         let resource = isRewardedAd ? FullscreenAdFormat.rewarded.rawValue : FullscreenAdFormat.interstitial.rawValue
         guard let url = URL(string: resource) else {
-            logger?.log("Failed to show fullscreen ad due to invalid creative URL.")
+            print("Failed to show fullscreen ad due to invalid creative URL.")
             
             if let onAdShowFailed = onAdShowFailed {
                 onAdShowFailed()
@@ -119,6 +115,6 @@ class ReferenceFullscreenAd: ReferenceAd {
     /// Attempt to destroy the current fullscreen ad.
     /// In this example, there are no "load" and "destroy" implementations as the fullscreen ad is tied to the SFSafariViewController.
     func destroy() {
-        logger?.log("Destroying the Reference fullscreen ad.")
+        print("Destroying the Reference fullscreen ad.")
     }
 }
