@@ -42,7 +42,7 @@ extension ReferenceAdapter {
             ad.show()
             ad.onAdImpression = {
                 self.log(.didTrackImpression(partnerAd))
-                delegate?.didTrackImpression(partnerAd) ?? self.log(.custom("Unable to notify didTrackImpression for the Reference adapter. Delegate is nil."))
+                delegate?.didTrackImpression(partnerAd) ?? self.log("Unable to notify didTrackImpression for the Reference adapter. Delegate is nil.")
                 completion(.success(partnerAd))
             }
             
@@ -54,18 +54,18 @@ extension ReferenceAdapter {
             
             ad.onAdClicked = {
                 self.log(.didClick(partnerAd, partnerError: nil))
-                delegate?.didClick(partnerAd) ?? self.log(.custom("Unable to notify didClick for the Reference adapter. Delegate is nil."))
+                delegate?.didClick(partnerAd) ?? self.log("Unable to notify didClick for the Reference adapter. Delegate is nil.")
             }
             
             ad.onAdRewarded = {
                 let reward = Reward(amount: 10, label: "coins")
                 self.log(.didReward(partnerAd, reward: reward))
-                delegate?.didReward(partnerAd, reward: reward) ?? self.log(.custom("Unable to notify didReward for the Reference adapter. Delegate is nil."))
+                delegate?.didReward(partnerAd, reward: reward) ?? self.log("Unable to notify didReward for the Reference adapter. Delegate is nil.")
             }
             
             ad.onAdDismissed = {
                 self.log(.didDismiss(partnerAd, partnerError: nil))
-                delegate?.didDismiss(partnerAd, error: nil) ?? self.log(.custom("Unable to notify didDismiss for the Reference adapter. Delegate is nil."))
+                delegate?.didDismiss(partnerAd, error: nil) ?? self.log("Unable to notify didDismiss for the Reference adapter. Delegate is nil.")
             }
         } else {
             completion(.failure(error(.showFailure(placement: partnerAd.request.heliumPlacement),

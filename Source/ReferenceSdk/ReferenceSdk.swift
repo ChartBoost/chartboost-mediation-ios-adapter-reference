@@ -20,7 +20,7 @@ class ReferenceSdk {
             completion()
         }
     }
-        
+    
     /// Simulate a partner SDK computation of a bid token.
     /// Using the random UUID as an example.
     /// Do NOT copy.
@@ -33,5 +33,17 @@ class ReferenceSdk {
     /// - Returns:
     static func getVersion() -> String {
         return "1.0.0"
+    }
+
+    /// Simulate a no-op test mode for demo purposes.
+    /// Do NOT copy.
+    /// - Parameter enabled: true if test mode is enabled, false otherwise.
+    static func setTestMode(enabled: Bool) {
+    }
+    
+    /// Simulate a no-op verbose logging setting.
+    /// Do NOT copy.
+    /// - Parameter enabled: true if verbose logging is enabled, false otherwise.
+    static func setVerboseLogging(enabled: Bool) {
     }
 }
