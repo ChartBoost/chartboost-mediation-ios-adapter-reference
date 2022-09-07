@@ -28,7 +28,7 @@ extension ReferenceAdapter {
             partnerAdDelegate.didTrackImpression(partnerAd)
         }
         ad.onAdClicked = {
-            self.log(.didClick(partnerAd, partnerError: nil))
+            self.log(.didClick(partnerAd, error: nil))
             partnerAdDelegate.didClick(partnerAd)
         }
         
@@ -45,9 +45,7 @@ extension ReferenceAdapter {
             ad.destroy()
             completion(.success(partnerAd))
         } else {
-            completion(.failure(error(.invalidateFailure(placement: partnerAd.request.heliumPlacement),
-                                      description: "Failed to invalidate the Reference banner ad. Ad is nil or not a ReferenceBannerAd.",
-                                      error: nil)))
+            completion(.failure(error(.noAdToInvalidate(partnerAd), description: "Ad is nil or not a ReferenceBannerAd.")))
         }
     }
     

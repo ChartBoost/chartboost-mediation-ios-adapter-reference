@@ -106,7 +106,7 @@ final class ReferenceAdapter: PartnerAdapter {
                 do {
                     self.log(.loadSucceeded(try result.get()))
                 } catch {
-                    self.log(.loadFailed(request, partnerError: error))
+                    self.log(.loadFailed(request, error: error))
                 }
                 
                 completion(result)
@@ -116,7 +116,7 @@ final class ReferenceAdapter: PartnerAdapter {
                 do {
                     self.log(.loadSucceeded(try result.get()))
                 } catch {
-                    self.log(.loadFailed(request, partnerError: error))
+                    self.log(.loadFailed(request, error: error))
                 }
                 
                 completion(result)
@@ -142,7 +142,7 @@ final class ReferenceAdapter: PartnerAdapter {
                 do {
                     self.log(.showSucceeded(try result.get()))
                 } catch {
-                    self.log(.showFailed(partnerAd, partnerError: error))
+                    self.log(.showFailed(partnerAd, error: error))
                 }
                 
                 completion(result)
@@ -163,7 +163,7 @@ final class ReferenceAdapter: PartnerAdapter {
                 do {
                     self.log(.invalidateSucceeded(try result.get()))
                 } catch {
-                    self.log(.invalidateFailed(partnerAd, partnerError: error))
+                    self.log(.invalidateFailed(partnerAd, error: error))
                 }
                 
                 completion(result)
@@ -173,7 +173,7 @@ final class ReferenceAdapter: PartnerAdapter {
                 do {
                     self.log(.invalidateSucceeded(try result.get()))
                 } catch {
-                    self.log(.invalidateFailed(partnerAd, partnerError: error))
+                    self.log(.invalidateFailed(partnerAd, error: error))
                 }
                 
                 completion(result)
