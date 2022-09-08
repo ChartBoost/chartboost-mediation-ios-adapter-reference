@@ -1,5 +1,5 @@
 //
-//  ReferenceFullscreenAdapter.swift
+//  ReferenceAdapter+Fullscreen.swift
 //  ReferenceAdapter
 //
 //  Created by Vu Chau on 8/22/22.
@@ -47,13 +47,13 @@ extension ReferenceAdapter {
             }
             
             ad.onAdShowFailed = {
-                let error = self.error(.showFailure(placement: partnerAd.request.heliumPlacement), description: "Failed to show the Reference fullscreen ad due to unknown errors.", error: nil)
-                self.log(.showFailed(partnerAd, partnerError: error))
+                let error = self.error(.showFailure(partnerAd))
+                self.log(.showFailed(partnerAd, error: error))
                 completion(.failure(error))
             }
             
             ad.onAdClicked = {
-                self.log(.didClick(partnerAd, partnerError: nil))
+                self.log(.didClick(partnerAd, error: nil))
                 delegate?.didClick(partnerAd) ?? self.log("Unable to notify didClick for the Reference adapter. Delegate is nil.")
             }
             
@@ -64,13 +64,11 @@ extension ReferenceAdapter {
             }
             
             ad.onAdDismissed = {
-                self.log(.didDismiss(partnerAd, partnerError: nil))
+                self.log(.didDismiss(partnerAd, error: nil))
                 delegate?.didDismiss(partnerAd, error: nil) ?? self.log("Unable to notify didDismiss for the Reference adapter. Delegate is nil.")
             }
         } else {
-            completion(.failure(error(.showFailure(placement: partnerAd.request.heliumPlacement),
-                                      description: "Failed to show the Reference fullscreen ad. Ad instance is nil or not a ReferenceFullscreenAd.",
-                                      error: nil)))
+            completion(.failure(error(.showFailure(partnerAd), description: "Ad instance is nil or not a ReferenceFullscreenAd.")))
         }
     }
     
@@ -84,9 +82,7 @@ extension ReferenceAdapter {
             ad.destroy()
             completion(.success(partnerAd))
         } else {
-            completion(.failure(error(.invalidateFailure(placement: partnerAd.request.heliumPlacement),
-                                      description: "Failed to invalidate the Reference fullscreen ad. Ad instance is nil or not a ReferenceFullscreenAd.",
-                                      error: nil)))
+            completion(.failure(error(.noAdToInvalidate(partnerAd), description: "Ad instance is nil or not a ReferenceFullscreenAd.")))
         }
     }
 }
