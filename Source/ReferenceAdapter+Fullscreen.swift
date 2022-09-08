@@ -1,5 +1,5 @@
 //
-//  ReferenceFullscreenAdapter.swift
+//  ReferenceAdapter+Fullscreen.swift
 //  ReferenceAdapter
 //
 //  Created by Vu Chau on 8/22/22.
