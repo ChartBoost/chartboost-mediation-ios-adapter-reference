@@ -16,7 +16,7 @@ extension ReferenceAdapter {
     ///   - partnerAdDelegate: Delegate for ad lifecycle notification purposes.
     ///   - viewController: The ViewController for ad presentation purposes.
     ///   - completion: Handler to notify Helium of task completion.
-    func loadBannerAd(request: AdLoadRequest, partnerAdDelegate: PartnerAdDelegate, viewController: UIViewController?, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
+    func loadBannerAd(request: PartnerAdLoadRequest, partnerAdDelegate: PartnerAdDelegate, viewController: UIViewController?, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
         /// Construct a Reference banner ad object as well as the partner ad to be persisted for subsequent ad operations.
         let ad = ReferenceBannerAd(placement: request.partnerPlacement, size: getReferenceBannerAdSize(size: request.size), viewController: viewController)
         let partnerAd = PartnerAd(ad: ad, details: [:], request: request)

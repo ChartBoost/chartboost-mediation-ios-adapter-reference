@@ -97,7 +97,7 @@ final class ReferenceAdapter: PartnerAdapter {
     ///   - partnerAdDelegate: Delegate for ad lifecycle notification purposes.
     ///   - viewController: The ViewController for ad presentation purposes.
     ///   - completion: Handler to notify Helium of task completion.
-    func load(request: AdLoadRequest, partnerAdDelegate: PartnerAdDelegate, viewController: UIViewController?, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
+    func load(request: PartnerAdLoadRequest, partnerAdDelegate: PartnerAdDelegate, viewController: UIViewController?, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
         log(.loadStarted(request))
         
         switch request.format {

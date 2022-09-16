@@ -15,7 +15,7 @@ extension ReferenceAdapter {
     ///   - request: The relevant data associated with the current ad load call.
     ///   - partnerAdDelegate: Delegate for ad lifecycle notification purposes.
     ///   - completion: Handler to notify Helium of task completion.
-    func loadFullscreenAd(request: AdLoadRequest, partnerAdDelegate: PartnerAdDelegate, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
+    func loadFullscreenAd(request: PartnerAdLoadRequest, partnerAdDelegate: PartnerAdDelegate, completion: @escaping (Result<PartnerAd, Error>) -> Void) {
         /// Since fullscreen ads require a load-show paradigm, persist the delegate so it can be retrieved at show time.
         delegates[request.heliumPlacement] = partnerAdDelegate
         
