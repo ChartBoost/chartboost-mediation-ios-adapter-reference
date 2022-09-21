@@ -72,14 +72,14 @@ final class ReferenceAdapter: PartnerAdapter {
     /// The current implementation merely logs the GDPR consent status.
     /// - Parameter status: The user's current GDPR consent status.
     func setGDPRConsentStatus(_ status: GDPRConsentStatus) {
-        log("The Reference adapter has been notified that the user's GDPR consent status is \(status).")
+        log(.setGDPRConsent(status))
     }
     
     /// Override this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
     /// The current implementation merely logs the COPPA subjectivity.
     /// - Parameter isSubject: True if the user is subject to COPPA, false otherwise.
     func setUserSubjectToCOPPA(_ isSubject: Bool) {
-        log("The Reference adapter has been notified that the user is \(isSubject ? "subject" : "not subject") to COPPA.")
+        log(.setCOPPAConsent(isSubject))
     }
     
     /// Override this method to notify your partner SDK of the CCPA privacy String as supplied by the Helium SDK.
@@ -88,7 +88,7 @@ final class ReferenceAdapter: PartnerAdapter {
     ///   - hasGivenConsent: True if the user has given CCPA consent, false otherwise.
     ///   - privacyString: The CCPA privacy String.
     func setCCPAConsent(hasGivenConsent: Bool, privacyString: String?) {
-        log("The Reference adapter has been notified that the user has \(hasGivenConsent ? "given" : "not given") CCPA consent.")
+        log(.setCCPAConsent(hasGivenConsent))
     }
     
     /// Override this method to make an ad request to the partner SDK for the given ad format.
