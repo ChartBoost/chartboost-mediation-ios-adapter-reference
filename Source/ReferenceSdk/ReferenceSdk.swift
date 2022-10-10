@@ -46,4 +46,23 @@ class ReferenceSdk {
     /// - Parameter enabled: true if verbose logging is enabled, false otherwise.
     static func setVerboseLogging(enabled: Bool) {
     }
+    
+    // The privacy API is intentionally inconsistent, to demonstrate the wide
+    // variety of implementations found in partner SDKs
+    
+    /// Simulate an update to GDPR consent
+    /// - A string that contains either "YES" or "NO"
+    static func consentsToTracking(_ consents: String) {
+    }
+    
+    /// Simulate an update to COPPA setting
+    /// - false if the user is subject to COPPA restrictions, true otherwise
+    static func coppaExempt(_ exempt: Bool) {
+    }
+    
+    /// Simulate an update to CCPA settings
+    /// - set to "1" if the user consents, or nil if they decline
+    static func ccpaConsent(_ consent: String?) {
+    }
+    
 }
