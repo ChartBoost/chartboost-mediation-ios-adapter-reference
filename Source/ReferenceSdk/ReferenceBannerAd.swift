@@ -63,7 +63,12 @@ class ReferenceBannerAd: UIView {
         addSubview(bannerAd)
         bannerAd.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bannerAd.load(URLRequest(url: URL(string: size.rawValue)!))
-        bannerAd.addGestureRecognizer(createSingleTap())
+        
+        // Create another view and place it on top the webview so it recognizes tap events
+        let tapAreaOverlay = UIView(frame: bounds)
+        addSubview(tapAreaOverlay)
+        tapAreaOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        tapAreaOverlay.addGestureRecognizer(createSingleTap())
         
         /// For simplicity, simulate an impression event after 1s
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { [self] in
