@@ -14,24 +14,19 @@ import WebKit
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.
 /// Do NOT copy.
-class ReferenceBannerAd: ReferenceAd {
-    /// The Reference banner ad instance
-    var bannerAd: WKWebView?
+class ReferenceBannerAd: UIView {
     
     /// The current placement name
-    var placement: String?
+    let placement: String?
     
     /// The banner ad size
-    var size: Size?
+    let size: Size
     
     /// The ViewController for ad presentation purposes.
     var viewController: UIViewController?
     
-    /// Closure for notifying Helium of an ad impression event
-    var onAdImpression: (() -> Void)?
-    
-    /// Closure for notifying Helium of an ad click event
-    var onAdClicked: (() -> Void)?
+    /// The delegate for this Reference ad.
+    weak var delegate: ReferenceBannerAdDelegate?
     
     /// The click through URL to navigate to after a click event has been processed
     let clickThroughUrl = "https://www.chartboost.com/helium/"
@@ -44,6 +39,11 @@ class ReferenceBannerAd: ReferenceAd {
         self.placement = placement
         self.size = size
         self.viewController = viewController
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     /// Enumeration of the Reference banner ad sizes.
@@ -59,29 +59,16 @@ class ReferenceBannerAd: ReferenceAd {
     func load(adm: String?) {
         print("Loading a Reference banner ad with ad markup: \(adm ?? "nil").")
         
-        destroy()
-        
-        bannerAd = WKWebView()
-        bannerAd?.load(URLRequest(url: URL(string: size?.rawValue ?? "")!))
-        bannerAd?.addGestureRecognizer(createSingleTap())
+        let bannerAd = WKWebView()
+        addSubview(bannerAd)
+        bannerAd.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        bannerAd.load(URLRequest(url: URL(string: size.rawValue)!))
+        bannerAd.addGestureRecognizer(createSingleTap())
         
         /// For simplicity, simulate an impression event after 1s
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-            if let onAdImpression = self.onAdImpression {
-                onAdImpression()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { [self] in
+            delegate?.onAdImpression()
         }
-    }
-    
-    /// No-op
-    func show() {
-    }
-    
-    /// Attempt to destroy the current Reference banner ad instance.
-    func destroy() {
-        bannerAd?.stopLoading()
-        bannerAd?.removeFromSuperview()
-        bannerAd = nil
     }
     
     /// Create a single tap gesture recognizer for UIView clickthrough purposes.
@@ -103,14 +90,19 @@ class ReferenceBannerAd: ReferenceAd {
         
         /// Present the VC after a small delay due to known restrictions by Apple.
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
-            UIApplication.shared.keyWindow?.rootViewController?.present(SFSafariViewController(url: url), animated: true, completion: nil)
+            let viewController = UIApplication.shared.keyWindow?.rootViewController
+            let browser = SFSafariViewController(url: url)
+            viewController?.present(browser, animated: true)
         }
         
         /// For simplicity, simulate a click event after 1s.
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-            if let onAdClicked = self.onAdClicked {
-                onAdClicked()
-            }
+            self.delegate?.onAdClicked()
         }
     }
+}
+
+protocol ReferenceBannerAdDelegate: AnyObject {
+    func onAdImpression()
+    func onAdClicked()
 }
