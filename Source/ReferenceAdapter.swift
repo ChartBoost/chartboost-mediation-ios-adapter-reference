@@ -66,20 +66,16 @@ final class ReferenceAdapter: PartnerAdapter {
         completion(["token": token])
     }
     
-    /// Indicates if GDPR applies or not.
-    /// - parameter applies: `true` if GDPR applies, `false` otherwise.
-    func setGDPRApplies(_ applies: Bool) {
-        /// Implement this method to notify your partner SDK of GDPR applicability as determined by the Helium SDK.
-        // Not every partner has a corresponding setting for "GDPR applies"
-        // ReferenceSDK has no setting for this, so setGDPRApplies is a no-op
-    }
-    
-    /// Indicates the user's GDPR consent status.
+    /// Indicates if GDPR applies or not and the user's GDPR consent status.
+    /// - parameter applies: `true` if GDPR applies, `false` if not, `nil` if the publisher has not provided this information.
     /// - parameter status: One of the `GDPRConsentStatus` values depending on the user's preference.
-    func setGDPRConsentStatus(_ status: GDPRConsentStatus) {
+    func setGDPR(applies: Bool?, status: GDPRConsentStatus) {
         /// Implement this method to notify your partner SDK of the GDPR consent status as determined by the Helium SDK.
         /// The current implementation merely logs the GDPR consent status.
-
+        
+        // Not every partner has a separate setting for "GDPR applies"
+        // ReferenceSDK has no setting for this, so status is not set if GDPR does not apply
+        guard applies == true else { return }
         
         let consentString = status == .granted ? "YES" : "NO"
         ReferenceSdk.consentsToTracking(consentString)
