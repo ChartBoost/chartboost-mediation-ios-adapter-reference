@@ -36,10 +36,10 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
         // Keep the Reference ad alive
         self.ad = ad
         
-        /// Load the Reference fullscreen ad.
+        // Load the Reference fullscreen ad.
         ad.load(adm: request.adm)
         
-        /// For simplicity, the current implementation always assumes successes.
+        // For simplicity, the current implementation always assumes successes.
         log(.loadSucceeded)
         completion(.success([:]))
 

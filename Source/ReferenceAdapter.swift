@@ -33,16 +33,16 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter storage: An object that exposes storage managed by the Helium SDK to the adapter.
     /// It includes a list of created `PartnerAd` instances. You may ignore this parameter if you don't need it.
     init(storage: PartnerAdapterStorage) {
-        /// Perform any initialization tasks that are needed prior to setUp() here.
-        /// You may keep a reference to `storage` and use it later to gather some information from previously created ads.
+        // Perform any initialization tasks that are needed prior to setUp() here.
+        // You may keep a reference to `storage` and use it later to gather some information from previously created ads.
     }
     
     /// Does any setup needed before beginning to load ads.
     /// - parameter configuration: Configuration data for the adapter to set up.
     /// - parameter completion: Closure to be performed by the adapter when it's done setting up. It should include an error indicating the cause for failure or `nil` if the operation finished successfully.
     func setUp(with configuration: PartnerConfiguration, completion: @escaping (Error?) -> Void) {
-        /// Implement this method to initialize the partner SDK so that it's ready to request and display ads.
-        /// For simplicity, the current implementation always assumes successes.
+        // Implement this method to initialize the partner SDK so that it's ready to request and display ads.
+        // For simplicity, the current implementation always assumes successes.
         
         log(.setUpStarted)
         
@@ -56,7 +56,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter request: Information about the ad load request.
     /// - parameter completion: Closure to be performed with the fetched info.
     func fetchBidderInformation(request: PreBidRequest, completion: @escaping ([String : String]?) -> Void) {
-        /// Implement this method to compute and return a bid token for the bid request.
+        // Implement this method to compute and return a bid token for the bid request.
         
         log(.fetchBidderInfoStarted(request))
         
@@ -70,11 +70,9 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter applies: `true` if GDPR applies, `false` if not, `nil` if the publisher has not provided this information.
     /// - parameter status: One of the `GDPRConsentStatus` values depending on the user's preference.
     func setGDPR(applies: Bool?, status: GDPRConsentStatus) {
-        /// Implement this method to notify your partner SDK of the GDPR consent status as determined by the Helium SDK.
-        /// The current implementation merely logs the GDPR consent status.
+        // Implement this method to notify your partner SDK of the GDPR consent status as determined by the Helium SDK.
+        // The current implementation merely logs the GDPR consent status.
         
-        // Not every partner has a separate setting for "GDPR applies"
-        // ReferenceSDK has no setting for this, so status is not set if GDPR does not apply
         guard applies == true else { return }
         
         let consentString = status == .granted ? "YES" : "NO"
@@ -87,8 +85,8 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter hasGivenConsent: A boolean indicating if the user has given consent.
     /// - parameter privacyString: A IAB-compliant string indicating the CCPA status.
     func setCCPAConsent(hasGivenConsent: Bool, privacyString: String?) {
-        /// Implement this method to notify your partner SDK of the CCPA privacy String as supplied by the Helium SDK.
-        /// The current implementation merely logs the CCPA consent status.
+        // Implement this method to notify your partner SDK of the CCPA privacy String as supplied by the Helium SDK.
+        // The current implementation merely logs the CCPA consent status.
         
         let consent = hasGivenConsent ? "1" : nil
         ReferenceSdk.ccpaConsent(consent)
@@ -99,8 +97,8 @@ final class ReferenceAdapter: PartnerAdapter {
     /// Indicates if the user is subject to COPPA or not.
     /// - parameter isSubject: `true` if the user is subject, `false` otherwise.
     func setUserSubjectToCOPPA(_ isSubject: Bool) {
-        /// Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
-        /// The current implementation merely logs the COPPA subjectivity.
+        // Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
+        // The current implementation merely logs the COPPA subjectivity.
         
         ReferenceSdk.coppaExempt(!isSubject)
         log(.privacyUpdated(setting: "coppaExempt", value: !isSubject))
@@ -114,8 +112,8 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter request: Information about the ad load request.
     /// - parameter delegate: The delegate that will receive ad life-cycle notifications.
     func makeAd(request: PartnerAdLoadRequest, delegate: PartnerAdDelegate) throws -> PartnerAd {
-        /// Here you must create a PartnerAd object and return it or throw an error.
-        /// You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
+        // Here you must create a PartnerAd object and return it or throw an error.
+        // You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
         
         switch request.format {
         case .interstitial, .rewarded:
