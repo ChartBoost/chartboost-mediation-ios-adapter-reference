@@ -64,7 +64,7 @@ class ReferenceFullscreenAd {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { [self] in
             delegate?.onAdImpression()
             delegate?.onAdClicked()
-            delegate?.onAdRewarded(amount: 10, label: "coins")
+            delegate?.onAdRewarded()
             delegate?.onAdDismissed()
         }
     }
@@ -75,6 +75,6 @@ protocol ReferenceFullscreenAdDelegate: AnyObject {
     func onAdShowFailed(_ referenceError: Error?)
     func onAdImpression()
     func onAdClicked()
-    func onAdRewarded(amount: Int, label: String)
+    func onAdRewarded()
     func onAdDismissed()
 }

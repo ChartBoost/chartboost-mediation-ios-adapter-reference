@@ -88,7 +88,7 @@ extension ReferenceAdapterFullscreenAd: ReferenceFullscreenAdDelegate {
         delegate?.didClick(self, details: [:]) ?? log(.delegateUnavailable)
     }
     
-    func onAdRewarded(amount: Int, label: String) {
+    func onAdRewarded() {
         log(.didReward)
         delegate?.didReward(self, details: [:]) ?? log(.delegateUnavailable)
     }
