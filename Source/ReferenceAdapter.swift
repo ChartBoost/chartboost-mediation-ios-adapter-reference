@@ -101,9 +101,7 @@ final class ReferenceAdapter: PartnerAdapter {
     func setUserSubjectToCOPPA(_ isSubject: Bool) {
         /// Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
         /// The current implementation merely logs the COPPA subjectivity.
-
-        // Sometimes the SDK setting has a meaning that requires you to invert the Boolean received by the adapter.
-        // If someone is subject to COPPA that's the opposite of being exempt, so flip the value.
+        
         ReferenceSdk.coppaExempt(!isSubject)
         log(.privacyUpdated(setting: "coppaExempt", value: !isSubject))
     }
