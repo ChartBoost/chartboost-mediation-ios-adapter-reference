@@ -42,7 +42,6 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
         /// For simplicity, the current implementation always assumes successes.
         log(.loadSucceeded)
         completion(.success([:]))
-
     }
     
     /// Shows a loaded ad.
