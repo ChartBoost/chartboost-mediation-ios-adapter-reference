@@ -36,10 +36,10 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
         // Keep the Reference ad alive
         self.ad = ad
         
-        /// Load the Reference fullscreen ad.
+        // Load the Reference fullscreen ad.
         ad.load(adm: request.adm)
         
-        /// For simplicity, the current implementation always assumes successes.
+        // For simplicity, the current implementation always assumes successes.
         log(.loadSucceeded)
         completion(.success([:]))
     }
@@ -87,10 +87,9 @@ extension ReferenceAdapterFullscreenAd: ReferenceFullscreenAdDelegate {
         delegate?.didClick(self, details: [:]) ?? log(.delegateUnavailable)
     }
     
-    func onAdRewarded(amount: Int, label: String) {
-        let reward = Reward(amount: amount, label: label)
-        log(.didReward(reward))
-        delegate?.didReward(self, details: [:], reward: reward) ?? log(.delegateUnavailable)
+    func onAdRewarded() {
+        log(.didReward)
+        delegate?.didReward(self, details: [:]) ?? log(.delegateUnavailable)
     }
     
     func onAdDismissed() {
