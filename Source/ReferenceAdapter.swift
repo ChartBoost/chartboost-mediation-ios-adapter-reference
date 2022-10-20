@@ -84,7 +84,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// Indicates the CCPA status both as a boolean and as an IAB US privacy string.
     /// - parameter hasGivenConsent: A boolean indicating if the user has given consent.
     /// - parameter privacyString: An IAB-compliant string indicating the CCPA status.
-    func setCCPAConsent(hasGivenConsent: Bool, privacyString: String?) {
+    func setCCPA(hasGivenConsent: Bool, privacyString: String) {
         // Implement this method to notify your partner SDK of the CCPA privacy String as supplied by the Helium SDK.
         // The current implementation merely logs the CCPA consent status.
         
@@ -95,13 +95,13 @@ final class ReferenceAdapter: PartnerAdapter {
     }
     
     /// Indicates if the user is subject to COPPA or not.
-    /// - parameter isSubject: `true` if the user is subject, `false` otherwise.
-    func setUserSubjectToCOPPA(_ isSubject: Bool) {
+    /// - parameter isChildDirected: `true` if the user is subject to COPPA, `false` otherwise.
+    func setCOPPA(isChildDirected: Bool) {
         // Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
         // The current implementation merely logs the COPPA subjectivity.
         
-        ReferenceSdk.coppaExempt(!isSubject)
-        log(.privacyUpdated(setting: "coppaExempt", value: !isSubject))
+        ReferenceSdk.coppaExempt(!isChildDirected)
+        log(.privacyUpdated(setting: "coppaExempt", value: !isChildDirected))
     }
     
     /// Creates a new ad object in charge of communicating with a single partner SDK ad instance.
