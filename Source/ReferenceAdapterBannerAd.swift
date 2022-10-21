@@ -59,7 +59,7 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         let height = size?.height ?? 50
         
         switch height {
-        case ..<89:
+        case 50..<89:
             return ReferenceBannerAd.Size.banner
         case 90..<249:
             return ReferenceBannerAd.Size.leaderboard
