@@ -20,8 +20,11 @@ Pod::Spec.new do |spec|
   spec.ios.frameworks = ['Foundation', 'SafariServices', 'UIKit', 'WebKit']
   
   # This adapter is compatible with all Helium 4.X versions of the SDK.
-  # spec.dependency 'ChartboostHelium', '~> 4.0'
+  spec.dependency 'ChartboostHelium', '~> 4.0'
 
   # Partner network SDK and version that this adapter is certified to work with.
-  # spec.dependency 'PartnerNetworkSDK', '1.0.0' 
+  # spec.dependency 'PartnerNetworkSDK', '1.0.0'
+
+  # Indicates, that if use_frameworks! is specified, the pod should include a static library framework.
+  spec.static_framework = true
 end
