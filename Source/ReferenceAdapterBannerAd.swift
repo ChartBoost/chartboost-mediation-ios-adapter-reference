@@ -23,25 +23,22 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
     func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
         log(.loadStarted)
         
-        // ReferenceBannerAd inherits from UIView so we must perform this in the UI thread
-        DispatchQueue.main.async { [self] in
-            // Construct a Reference banner ad object as well as the partner ad to be persisted for subsequent ad operations.
-            let ad = ReferenceBannerAd(
-                placement: request.partnerPlacement,
-                size: getReferenceBannerAdSize(size: request.size),
-                viewController: viewController
-            )
-            ad.delegate = self
-            
-            // Set the inlineView so Helium SDK can lay out the ReferenceBannerAd properly
-            self.inlineView = ad
-            
-            // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Helium.
-            ad.load(adm: request.adm)
-            
-            // For simplicity, the current implementation always assumes successes.
-            completion(.success([:]))
-        }
+        // Construct a Reference banner ad object as well as the partner ad to be persisted for subsequent ad operations.
+        let ad = ReferenceBannerAd(
+            placement: request.partnerPlacement,
+            size: getReferenceBannerAdSize(size: request.size),
+            viewController: viewController
+        )
+        ad.delegate = self
+        
+        // Set the inlineView so Helium SDK can lay out the ReferenceBannerAd properly
+        self.inlineView = ad
+        
+        // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Helium.
+        ad.load(adm: request.adm)
+        
+        // For simplicity, the current implementation always assumes successes.
+        completion(.success([:]))
     }
     
     /// Shows a loaded ad.
