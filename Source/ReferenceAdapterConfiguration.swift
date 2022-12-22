@@ -10,33 +10,23 @@ import Foundation
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
 /// A list of externally configurable properties pertaining to the partner SDK that can be retrieved and set by publishers.
-public class ReferenceAdapterConfiguration {
+@objc public class ReferenceAdapterConfiguration: NSObject {
+    
     /// Flag that can optionally be set to enable the partner's test mode.
     /// Disabled by default.
-    private static var _testMode = false
-    public static var testMode: Bool {
-        get {
-            return _testMode
-        }
-        set {
-            _testMode = newValue
-            ReferenceSdk.setTestMode(enabled: newValue)
-            print("The Reference SDK's test mode is \(newValue ? "enabled" : "disabled").")
+    @objc public static var testMode: Bool = false {
+        didSet {
+            ReferenceSdk.setTestMode(enabled: testMode)
+            print("Reference SDK test mode set to \(testMode)")
         }
     }
     
     /// Flag that can optionally be set to enable the partner's verbose logging.
     /// Disabled by default.
-    private static var _verboseLogging = false
-    public static var verboseLogging: Bool {
-        get {
-            return _verboseLogging
-        }
-        set {
-            _verboseLogging = newValue
-            ReferenceSdk.setVerboseLogging(enabled: newValue)
-            print("The Reference SDK's verbose logging is \(newValue ? "enabled" : "disabled").")
-            
+    @objc public static var verboseLogging: Bool = false {
+        didSet {
+            ReferenceSdk.setVerboseLogging(enabled: verboseLogging)
+            print("Reference SDK verbose logging set to \(verboseLogging)")
         }
     }
     
