@@ -52,7 +52,7 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
         log(.showStarted)
         
         guard let ad = ad else {
-            let error = error(.noAdReadyToShow)
+            let error = error(.showFailureAdNotReady)
             log(.showFailed(error))
             completion(.failure(error))
             return
@@ -71,7 +71,7 @@ extension ReferenceAdapterFullscreenAd: ReferenceFullscreenAdDelegate {
     }
     
     func onAdShowFailed(_ referenceError: Error?) {
-        let error = error(.showFailure, error: referenceError)
+        let error = error(.showFailureException, error: referenceError)
         log(.showFailed(error))
         showCompletion?(.failure(error)) ?? log(.showResultIgnored)
         showCompletion = nil
