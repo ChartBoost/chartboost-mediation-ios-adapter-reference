@@ -71,7 +71,7 @@ extension ReferenceAdapterFullscreenAd: ReferenceFullscreenAdDelegate {
     }
     
     func onAdShowFailed(_ referenceError: Error?) {
-        let error = error(.showFailureUnknown, error: referenceError)
+        let error = referenceError ?? self.error(.showFailureUnknown)
         log(.showFailed(error))
         showCompletion?(.failure(error)) ?? log(.showResultIgnored)
         showCompletion = nil
