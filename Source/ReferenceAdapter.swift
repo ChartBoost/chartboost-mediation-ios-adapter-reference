@@ -10,8 +10,8 @@
 //  Created by Vu Chau on 8/22/22.
 //
 
+import ChartboostMediationSDK
 import Foundation
-import HeliumSdk
 import UIKit
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
