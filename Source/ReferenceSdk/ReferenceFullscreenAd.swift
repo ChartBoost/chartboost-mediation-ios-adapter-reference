@@ -10,9 +10,9 @@
 //  Created by Vu Chau on 8/22/22.
 //
 
+import ChartboostMediationSDK
 import Foundation
 import SafariServices
-import HeliumSdk
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.

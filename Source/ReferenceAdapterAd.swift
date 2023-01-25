@@ -10,8 +10,8 @@
 //  Created by Daniel Barros on 10/14/22.
 //
 
+import ChartboostMediationSDK
 import Foundation
-import HeliumSdk
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
