@@ -5,7 +5,7 @@
 
 //
 //  ReferenceAdapter.swift
-//  ReferenceAdapter
+//  ChartboostMediationAdapterReference
 //
 //  Created by Vu Chau on 8/22/22.
 //
@@ -16,16 +16,16 @@ import UIKit
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
-/// An adapter that is used for reference purposes. It is designed to showcase and test the mediation contract of the Helium SDK.
-/// Implementations of the Helium mediation interface may roughly model their own design after this class, but do NOT call this adapter directly.
+/// An adapter that is used for reference purposes. It is designed to showcase and test the mediation contract of the Chartboost Mediation SDK.
+/// Implementations of the Chartboost Mediation mediation interface may roughly model their own design after this class, but do NOT call this adapter directly.
 final class ReferenceAdapter: PartnerAdapter {
     
     /// The version of the partner SDK.
     let partnerSDKVersion = ReferenceSdk.getVersion()
     
     /// The version of the adapter.
-    /// It should have either 5 or 6 digits separated by periods, where the first digit is Helium SDK's major version, the last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
-    /// Format: `<Helium major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
+    /// It should have either 5 or 6 digits separated by periods, where the first digit is Chartboost Mediation SDK's major version, the last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
+    /// Format: `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
     let adapterVersion = "4.1.0.0.0"
     
     /// The partner's unique identifier.
@@ -35,8 +35,8 @@ final class ReferenceAdapter: PartnerAdapter {
     let partnerDisplayName = "Reference"
     
     /// The designated initializer for the adapter.
-    /// Helium SDK will use this constructor to create instances of conforming types.
-    /// - parameter storage: An object that exposes storage managed by the Helium SDK to the adapter.
+    /// Chartboost Mediation SDK will use this constructor to create instances of conforming types.
+    /// - parameter storage: An object that exposes storage managed by the Chartboost Mediation SDK to the adapter.
     /// It includes a list of created `PartnerAd` instances. You may ignore this parameter if you don't need it.
     init(storage: PartnerAdapterStorage) {
         // Perform any initialization tasks that are needed prior to setUp() here.
@@ -76,7 +76,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter applies: `true` if GDPR applies, `false` if not, `nil` if the publisher has not provided this information.
     /// - parameter status: One of the `GDPRConsentStatus` values depending on the user's preference.
     func setGDPR(applies: Bool?, status: GDPRConsentStatus) {
-        // Implement this method to notify your partner SDK of the GDPR consent status as determined by the Helium SDK.
+        // Implement this method to notify your partner SDK of the GDPR consent status as determined by the Chartboost Mediation SDK.
         // The current implementation merely logs the GDPR consent status.
         
         guard applies == true else { return }
@@ -91,7 +91,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// - parameter hasGivenConsent: A boolean indicating if the user has given consent.
     /// - parameter privacyString: An IAB-compliant string indicating the CCPA status.
     func setCCPA(hasGivenConsent: Bool, privacyString: String) {
-        // Implement this method to notify your partner SDK of the CCPA privacy String as supplied by the Helium SDK.
+        // Implement this method to notify your partner SDK of the CCPA privacy String as supplied by the Chartboost Mediation SDK.
         // The current implementation merely logs the CCPA consent status.
         
         let consent = hasGivenConsent ? "1" : nil
@@ -103,7 +103,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// Indicates if the user is subject to COPPA or not.
     /// - parameter isChildDirected: `true` if the user is subject to COPPA, `false` otherwise.
     func setCOPPA(isChildDirected: Bool) {
-        // Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Helium SDK.
+        // Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Chartboost Mediation SDK.
         // The current implementation merely logs the COPPA subjectivity.
         
         ReferenceSdk.coppaExempt(!isChildDirected)
@@ -111,8 +111,8 @@ final class ReferenceAdapter: PartnerAdapter {
     }
     
     /// Creates a new ad object in charge of communicating with a single partner SDK ad instance.
-    /// Helium SDK calls this method to create a new ad for each new load request. Ad instances are never reused.
-    /// Helium SDK takes care of storing and disposing of ad instances so you don't need to.
+    /// Chartboost Mediation SDK calls this method to create a new ad for each new load request. Ad instances are never reused.
+    /// Chartboost Mediation SDK takes care of storing and disposing of ad instances so you don't need to.
     /// `invalidate()` is called on ads before disposing of them in case partners need to perform any custom logic before the object gets destroyed.
     /// If, for some reason, a new ad cannot be provided, an error should be thrown.
     /// - parameter request: Information about the ad load request.

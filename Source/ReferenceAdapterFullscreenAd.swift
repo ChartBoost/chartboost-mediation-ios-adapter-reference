@@ -5,7 +5,7 @@
 
 //
 //  ReferenceAdapterFullscreenAd.swift
-//  ReferenceAdapter
+//  ChartboostMediationAdapterReference
 //
 //  Created by Vu Chau on 8/22/22.
 //
@@ -15,7 +15,7 @@ import Foundation
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
-/// The Helium Reference adapter fullscreen ad.
+/// The Chartboost Mediation Reference adapter fullscreen ad.
 final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
     
     /// The partner ad view to display inline. E.g. a banner view.

@@ -5,7 +5,7 @@
 
 //
 //  ReferenceAdapter.swift
-//  ReferenceAdapter
+//  ChartboostMediationAdapterReference
 //
 //  Created by Daniel Barros on 10/14/22.
 //
@@ -15,7 +15,7 @@ import Foundation
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
-/// Base class for Helium Reference adapter ads.
+/// Base class for Chartboost Mediation Reference adapter ads.
 /// It is convenient to create a base class for your adapter's PartnerAd types, although this is not required.
 class ReferenceAdapterAd: NSObject {
     

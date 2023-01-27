@@ -5,7 +5,7 @@
 
 //
 //  ReferenceAdapterConfiguration.swift
-//  ChartboostHeliumAdapterReference
+//  ChartboostMediationAdapterReference
 //
 //  Created by Vu Chau on 8/29/22.
 //

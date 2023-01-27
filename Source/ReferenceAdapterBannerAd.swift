@@ -5,7 +5,7 @@
 
 //
 //  ReferenceAdapterBannerAd.swift
-//  ReferenceAdapter
+//  ChartboostMediationAdapterReference
 //
 //  Created by Vu Chau on 8/22/22.
 //
@@ -15,7 +15,7 @@ import Foundation
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
-/// The Helium Reference adapter banner ad.
+/// The Chartboost Mediation Reference adapter banner ad.
 final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
     
     /// The partner ad view to display inline. E.g. a banner view.
@@ -36,10 +36,10 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         )
         ad.delegate = self
         
-        // Set the inlineView so Helium SDK can lay out the ReferenceBannerAd properly
+        // Set the inlineView so Chartboost Mediation SDK can lay out the ReferenceBannerAd properly
         self.inlineView = ad
         
-        // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Helium.
+        // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Chartboost Mediation.
         ad.load(adm: request.adm)
         
         // For simplicity, the current implementation always assumes successes.
@@ -54,8 +54,8 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         // no-op
     }
     
-    /// Map Helium's banner sizes to the Reference SDK's supported sizes.
-    /// - Parameter size: The Helium's banner size.
+    /// Map Chartboost Mediation's banner sizes to the Reference SDK's supported sizes.
+    /// - Parameter size: The Chartboost Mediation's banner size.
     /// - Returns: The corresponding Reference banner size.
     func getReferenceBannerAdSize(size: CGSize?) -> ReferenceBannerAd.Size {
         let height = size?.height ?? 50
