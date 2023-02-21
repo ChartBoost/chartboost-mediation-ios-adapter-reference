@@ -21,6 +21,18 @@ jobs:
         run: echo "version=$(ruby ./Scripts/next-rc-version.rb)" >> $GITHUB_OUTPUT
         shell: bash
 
+      # Add copyright headers if missing.
+      - name: Ensure copyright headers
+        id: header_check
+        run: echo "result=$(ruby ./Scripts/check-headers.rb)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      # Push header changes if any.
+      - name: Push Header Changes
+        if: ${{ steps.header_check.outputs.result == 'changes' }}
+        run: git add . && git commit -m '[AUTO-GENERATED] Fix headers' && git push
+        shell: bash
+
       # Add new changelog entry for the current adapter version if missing.
       - name: Add Changelog Entry
         id: changelog_entry
