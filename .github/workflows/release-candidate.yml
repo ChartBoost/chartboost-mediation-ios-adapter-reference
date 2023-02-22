@@ -24,7 +24,7 @@ jobs:
       # Add copyright headers if missing.
       - name: Ensure copyright headers
         id: header_check
-        run: echo "result=$(ruby ./Scripts/check-headers.rb)" >> $GITHUB_OUTPUT
+        run: echo "result=$(ruby ./Scripts/copyright.rb)" >> $GITHUB_OUTPUT
         shell: bash
 
       # Push header changes if any.
