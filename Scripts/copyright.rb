@@ -33,7 +33,7 @@ files_have_been_changed = false
 
 files.each do |file_path|
   # Dynamically add comment formatting to header so we can adjust for different file types in the future
-  notice_as_comment = "//" + copyright_notice.gsub(/\n/, "\n//") + "\n"
+  notice_as_comment = "//" + copyright_notice.gsub(/\n/, "\n//") + "\n\n"
   File.open(file_path, 'r') do |f|
     contents = f.read
     if contents.start_with?(notice_as_comment)
