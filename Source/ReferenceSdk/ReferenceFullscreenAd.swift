@@ -60,6 +60,7 @@ class ReferenceFullscreenAd {
         
         /// For simplicity, this implementation fires all completion handlers after a small delay.
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { [self] in
+            delegate?.onAdShowSuccess()
             delegate?.onAdImpression()
             delegate?.onAdClicked()
             delegate?.onAdRewarded()
