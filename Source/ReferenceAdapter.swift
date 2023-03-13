@@ -19,7 +19,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// The version of the adapter.
     /// It should have either 5 or 6 digits separated by periods, where the first digit is Chartboost Mediation SDK's major version, the last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
     /// Format: `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
-    let adapterVersion = "4.1.0.0.0"
+    let adapterVersion = "4.1.0.0.1"
     
     /// The partner's unique identifier.
     let partnerIdentifier = "reference"
@@ -115,11 +115,11 @@ final class ReferenceAdapter: PartnerAdapter {
         // You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
         
         switch request.format {
-        case .interstitial, .rewarded:
+        case .interstitial, .rewarded, .rewardedInterstitial:
             return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
         case .banner:
             return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
-        @unknown default:
+        default:
             throw error(.loadFailureUnsupportedAdFormat)
         }
     }
