@@ -115,12 +115,17 @@ final class ReferenceAdapter: PartnerAdapter {
         // You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
         
         switch request.format {
-        case .interstitial, .rewarded, .rewardedInterstitial:
+        case .interstitial, .rewarded:
             return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
         case .banner:
             return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
         default:
-            throw error(.loadFailureUnsupportedAdFormat)
+            // Not using the `.rewardedInterstitial` case directly to maintain backward compatibility with Chartboost Mediation 4.0
+            if request.format.rawValue == "rewardedInterstitial" {
+                return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
+            } else {
+                throw error(.loadFailureUnsupportedAdFormat)
+            }
         }
     }
 }
