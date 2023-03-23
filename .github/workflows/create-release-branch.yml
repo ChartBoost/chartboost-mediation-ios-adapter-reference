@@ -6,12 +6,17 @@ on:
     inputs:
       adapter-version:
         type: string
-        description: 'Adapter version (e.g. \'4.9.2.0.0\')''
+        description: 'Adapter version (e.g. ''4.9.2.0.0'')'
         required: true
       partner-version:
         type: string
-        description: 'Partner version (e.g. \'~> 9.2.0\')'
+        description: 'Partner version (e.g. ''~> 9.2.0'')'
         required: true
+        default: '~> '
+      tag:
+        type: string
+        description: 'Tag to be used as base for the new branch. If empty, the selected branch is used instead.'
+        required: false
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUBSERVICETOKEN }}
@@ -20,9 +25,18 @@ jobs:
   validate-podspec:
     runs-on: macos-latest
     steps:
-      # Check out the repo.
-      - name: Checkout
+
+      # Check out the repo at the specified branch.
+      - name: Checkout Branch
+        if: ${{ inputs.tag == '' }}
         uses: actions/checkout@v3
+
+      # Check out the repo at the specified tag.
+      - name: Checkout Tag
+        if: ${{ inputs.tag != '' }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.tag }}
 
       # Validate adapter and partner versions are compatible.
       - name: Validate Adapter and Partner Version Match
