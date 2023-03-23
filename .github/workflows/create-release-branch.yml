@@ -1,0 +1,61 @@
+name: Create Release Branch
+
+on:
+  # Manual trigger from the Github Actions tab
+  workflow_dispatch:
+    inputs:
+      adapter-version:
+        type: string
+        description: 'Adapter version (e.g. \'4.9.2.0.0\')''
+        required: true
+      partner-version:
+        type: string
+        description: 'Partner version (e.g. \'~> 9.2.0\')'
+        required: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUBSERVICETOKEN }}
+
+jobs:
+  validate-podspec:
+    runs-on: macos-latest
+    steps:
+      # Check out the repo.
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Validate adapter and partner versions are compatible.
+      - name: Validate Adapter and Partner Version Match
+        run: if [ "$(ruby ./Scripts/validate-adapter-and-partner-versions.rb ${{ inputs.adapter-version }} ${{ inputs.partner-version }})" != "true" ]; then exit 1; fi
+        shell: bash
+
+      # Validate adapter version is well-formed and not already released.
+      - name: Validate Adapter Version
+        run: if [ "$(ruby ./Scripts/validate-new-release-version.rb) ${{ inputs.adapter-version }}" != "true" ]; then exit 1; fi
+        shell: bash
+
+      # Create and checkout branch
+      - name: Create Branch
+        run: git checkout -b "release/${{ github.ref_name }}"
+        shell: bash
+
+      # Update version strings in podspec.
+      - name: Update Version Strings in Podspec
+        run: ruby ./Scripts/update_podspec_versions.rb ${{ inputs.adapter-version }} ${{ inputs.partner-version }})
+        shell: bash
+
+      # Update version string in main adapter class.
+      - name: Update Version String in Partner Adapter Class
+        run: ruby ./Scripts/update_adapter_class_version.rb ${{ inputs.adapter-version }}
+        shell: bash
+
+      # Add new changelog entry for the current adapter version.
+      - name: Add Changelog Entry
+        run: ruby ./Scripts/add-changelog-entry.rb ${{ inputs.adapter-version }} ${{ inputs.partner-version }})
+        shell: bash
+
+      # Commit and push changes.
+      - name: Push Changes
+        if: ${{ steps.changelog_entry.outputs.result == 'added' }}
+        run: git add *.podspec CHANGELOG.md Source/*Adapter.swift && git commit -m '[AUTO-GENERATED] Update version strings and changelog' && git push -u origin "release/${{ github.ref_name }}"
+        shell: bash
