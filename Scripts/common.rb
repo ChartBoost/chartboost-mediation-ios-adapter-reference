@@ -1,12 +1,12 @@
 # Common definitions used by other scripts.
 
 PODSPEC_PATH_PATTERN = "*.podspec"
-PODSPEC_VERSION_REGEX = /^\s*spec\.version\s*=\s*'([0-9]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+(?>.[0-9]+)?)'\s*$/
+PODSPEC_VERSION_REGEX = /^(\s*spec\.version\s*=\s*')([0-9]+(?>\.[0-9]+){4,5})('\s*)$/
 PODSPEC_NAME_REGEX = /^\s*spec\.name\s*=\s*'([^']+)'\s*$/
 PODSPEC_PARTNER_REGEX = /spec\.dependency\s*'([^']+)'/
 CHANGELOG_PATH = "CHANGELOG.md"
 ADAPTER_CLASS_PREFIX = "ChartboostMediationAdapter"
-ADAPTER_VERSION_REGEX = /^\s*let adapterVersion\s*=\s*"([^"]+)".*$/
+ADAPTER_CLASS_VERSION_REGEX = /^(\s*let adapterVersion\s*=\s*")([^"]+)(".*)$/
 
 ###########
 # PODSPEC #
@@ -40,7 +40,7 @@ def podspec_version
   text = read_podspec()
 
   # Obtain the adapter version from the podspec
-  version = text.match(PODSPEC_VERSION_REGEX).captures.first
+  version = text.match(PODSPEC_VERSION_REGEX).captures[1]
   fail unless !version.nil?
 
   # Return value
@@ -122,4 +122,17 @@ def adapter_class_file_path
 
   # Return value
   path
+end
+
+# Returns the partner adapter version value in the main adapter class.
+def adapter_class_version
+  # Obtain the adapter class
+  text = read_adapter_class()
+
+  # Obtain the adapter version from the file
+  version = text.match(ADAPTER_CLASS_VERSION_REGEX).captures[1]
+  fail unless !version.nil?
+
+  # Return value
+  version
 end

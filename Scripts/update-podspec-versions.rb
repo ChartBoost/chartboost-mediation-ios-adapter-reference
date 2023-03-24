@@ -13,11 +13,12 @@ partner_sdk_name = podspec_partner_sdk_name()
 # Read the podspec file
 podspec = read_podspec()
 
-# Replace the adapter version string in the podspec
-podspec = podspec.sub(PODSPEC_VERSION_REGEX, "  spec.version     = '#{adapter_version}'")
+# Replace the adapter version string in the podspec (capture group 2), keeping everything else the same (capture groups 1 and 3)
+podspec = podspec.sub(PODSPEC_VERSION_REGEX, "\\1#{adapter_version}\\3")
 
 # Replace the partner SDK version string in the podspec
-podspec = podspec.sub(/spec\.dependency\s*'#{partner_sdk_name}'.*$/, "spec.dependency '#{partner_sdk_name}', '#{partner_version}'")
+partner_sdk_version_regex = /(spec\.dependency\s*'#{partner_sdk_name}').*$/
+podspec = podspec.sub(partner_sdk_version_regex, "\\1, '#{partner_version}'")
 
 # Write the changes
 write_podspec(podspec)

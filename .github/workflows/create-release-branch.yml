@@ -13,10 +13,6 @@ on:
         description: 'Partner version (e.g. ''~> 9.2.0'')'
         required: true
         default: '~> '
-      tag:
-        type: string
-        description: 'Tag to be used as base for the new branch. If empty, the selected branch is used instead.'
-        required: false
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUBSERVICETOKEN }}
@@ -26,26 +22,23 @@ jobs:
     runs-on: macos-latest
     steps:
 
-      # Check out the repo at the specified branch.
+      # Check out the repo at the specified branch or tag.
       - name: Checkout Branch
-        if: ${{ inputs.tag == '' }}
         uses: actions/checkout@v3
-
-      # Check out the repo at the specified tag.
-      - name: Checkout Tag
-        if: ${{ inputs.tag != '' }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.tag }}
 
       # Validate adapter and partner versions are compatible.
       - name: Validate Adapter and Partner Version Match
-        run: if [ "$(ruby ./Scripts/validate-adapter-and-partner-versions.rb '${{ inputs.adapter-version }}' '${{ inputs.partner-version }}')" != "true" ]; then exit 1; fi
+        run: ruby ./Scripts/validate-adapter-and-partner-versions.rb "${{ inputs.adapter-version }}" "${{ inputs.partner-version }}"
         shell: bash
 
       # Validate adapter version is well-formed and not already released.
       - name: Validate Adapter Version
-        run: if [ "$(ruby ./Scripts/validate-new-release-version.rb '${{ inputs.adapter-version }}')" != "true" ]; then exit 1; fi
+        run: ruby ./Scripts/validate-new-release-version.rb "${{ inputs.adapter-version }}"
+        shell: bash
+
+      # Validate partner version is well-formed.
+      - name: Validate Partner Version
+        run: ruby ./Scripts/validate-partner-version.rb "${{ inputs.partner-version }}"
         shell: bash
 
       # Create and checkout branch
@@ -55,12 +48,12 @@ jobs:
 
       # Update version strings in podspec.
       - name: Update Version Strings in Podspec
-        run: ruby ./Scripts/update_podspec_versions.rb "${{ inputs.adapter-version }}" "${{ inputs.partner-version }}"
+        run: ruby ./Scripts/update-podspec-versions.rb "${{ inputs.adapter-version }}" "${{ inputs.partner-version }}"
         shell: bash
 
       # Update version string in main adapter class.
       - name: Update Version String in Partner Adapter Class
-        run: ruby ./Scripts/update_adapter_class_version.rb "${{ inputs.adapter-version }}"
+        run: ruby ./Scripts/update-adapter-class-version.rb "${{ inputs.adapter-version }}"
         shell: bash
 
       # Add new changelog entry for the current adapter version.
@@ -70,5 +63,5 @@ jobs:
 
       # Commit and push changes.
       - name: Push Changes
-        run: git add *.podspec CHANGELOG.md Source/*Adapter.swift && git commit -m '[AUTO-GENERATED] Update version strings and changelog' && git push -u origin "release/${{ inputs.adapter-version }}"
+        run: git add *.podspec CHANGELOG.md Source/*Adapter.swift && git commit -m "[AUTO-GENERATED] Update version to ${{ inputs.adapter-version }}" && git push -u origin "release/${{ inputs.adapter-version }}"
         shell: bash
