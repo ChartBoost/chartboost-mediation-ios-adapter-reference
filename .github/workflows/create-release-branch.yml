@@ -68,4 +68,4 @@ jobs:
 
       # Open a pull request from the new branch to main.
       - name: Open Pull Request
-        run: gh pr create --base "main" --reviewer "@ChartBoost/helium-ios" --title "Version Update: ${{ inputs.adapter-version }}" --body "Adapter version: '${{ inputs.adapter-version }}'\nPartner SDK version: '${{ inputs.partner-version }}'" --label "do not merge"
+        run: gh pr create --base "main" --reviewer "@ChartBoost/helium-ios" --title "Update Version to ${{ inputs.adapter-version }}" --body "Adapter version '${{ inputs.adapter-version }}'\nPartner SDK version '${{ inputs.partner-version }}'" --label "do not merge"
