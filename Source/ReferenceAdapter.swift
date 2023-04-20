@@ -119,7 +119,7 @@ final class ReferenceAdapter: PartnerAdapter {
             return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
         case .banner:
             return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
-        @unknown default:
+        default:
             throw error(.loadFailureUnsupportedAdFormat)
         }
     }
