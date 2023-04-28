@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name        = 'ChartboostMediationAdapterReference'
-  spec.version     = '4.1.0.0.0'
+  spec.version     = '9.9.9.9.9'
   spec.license     = { :type => 'MIT', :file => 'LICENSE.md' }
   spec.homepage    = 'https://github.com/ChartBoost/chartboost-mediation-ios-adapter-reference'
   spec.authors     = { 'Chartboost' => 'https://www.chartboost.com/' }
@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'ChartboostMediationSDK', '~> 4.0'
 
   # Partner network SDK and version that this adapter is certified to work with.
-  # spec.dependency 'PartnerNetworkSDK', '1.0.0'
+  # spec.dependency 'PartnerNetworkSDK', '9.9.9'
 
   # Indicates, that if use_frameworks! is specified, the pod should include a static library framework.
   spec.static_framework = true
