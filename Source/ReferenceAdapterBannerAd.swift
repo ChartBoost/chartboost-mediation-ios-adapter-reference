@@ -1,8 +1,9 @@
-// Copyright 2022-2023 Chartboost, Inc.
+// Blablalfbj
+// asldfj lasijdf liasjd f
+// asdlfjlasdfj lijasdf
 //
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file.
-
+// asdlfj asldijf salidfj
+// asldfknja slkdfjasdf
 import ChartboostMediationSDK
 import Foundation
 
