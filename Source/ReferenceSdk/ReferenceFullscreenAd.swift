@@ -29,7 +29,7 @@ class ReferenceFullscreenAd {
     weak var delegate: ReferenceFullscreenAdDelegate?
         
     /// The log configuration.
-    private lazy var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Banner")
+    private lazy var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Fullscreen")
 
     /// Initialize the Reference fullscreen ad.
     /// - Parameters:
