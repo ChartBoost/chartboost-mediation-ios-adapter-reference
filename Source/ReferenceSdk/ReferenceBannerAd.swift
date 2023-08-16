@@ -31,7 +31,7 @@ class ReferenceBannerAd: UIView {
     let clickThroughUrl = "https://www.chartboost.com/helium/"
 
     /// The log configuration.
-    private var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Banner")
+    private lazy var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Banner")
 
     /// Initialize the Reference banner ad.
     /// - Parameters:
