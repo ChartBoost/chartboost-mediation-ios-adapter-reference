@@ -8,6 +8,7 @@ import Foundation
 import SafariServices
 import UIKit
 import WebKit
+import os.log
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.
@@ -28,7 +29,10 @@ class ReferenceBannerAd: UIView {
     
     /// The click through URL to navigate to after a click event has been processed
     let clickThroughUrl = "https://www.chartboost.com/helium/"
-    
+
+    /// The log configuration.
+    private var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Banner")
+
     /// Initialize the Reference banner ad.
     /// - Parameters:
     ///   - placement: The placement name.
@@ -55,8 +59,10 @@ class ReferenceBannerAd: UIView {
     /// - Parameters:
     ///   - adm: The ad markup.
     func load(adm: String?) {
-        print("Loading a Reference banner ad with ad markup: \(adm ?? "nil").")
-        
+        if #available(iOS 12.0, *) {
+            os_log(.debug, log: log, "Loading a Reference banner ad with ad markup: %{public}s", adm ?? "nil")
+        }
+
         let bannerAd = WKWebView()
         addSubview(bannerAd)
         bannerAd.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -87,7 +93,9 @@ class ReferenceBannerAd: UIView {
     @objc func clickthrough() {
         /// Show the ad as a webpage via an SFSafariViewController
         guard let url = URL(string: clickThroughUrl) else {
-            print("Failed to perform clickthrough action due to invalid destination URL.")
+            if #available(iOS 12.0, *) {
+                os_log(.error, log: log, "Failed to perform clickthrough action due to invalid destination URL.")
+            }
             return
         }
         

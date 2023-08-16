@@ -6,6 +6,7 @@
 import ChartboostMediationSDK
 import Foundation
 import SafariServices
+import os.log
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.
@@ -27,6 +28,9 @@ class ReferenceFullscreenAd {
     /// The delegate for this Reference ad.
     weak var delegate: ReferenceFullscreenAdDelegate?
         
+    /// The log configuration.
+    private var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Banner")
+
     /// Initialize the Reference fullscreen ad.
     /// - Parameters:
     ///   - placement: The placement name.
@@ -39,14 +43,18 @@ class ReferenceFullscreenAd {
     /// Attempt to load a fullscreen ad.
     /// In this example, there are no "load" and "destroy" implementations as the fullscreen ad is tied to the SFSafariViewController.
     func load(adm: String?) {
-        print("Loading a Reference fullscreen ad with ad markup: \(adm ?? "nil").")
+        if #available(iOS 12.0, *) {
+            os_log(.debug, log: log, "Loading a Reference fullscreen ad with ad markup: %{public}s", adm ?? "nil")
+        }
     }
     
     /// Attempt to show the currently loaded fullscreen ad.
     func show() {
         /// Show the ad as a webpage via an SFSafariViewController
         guard let url = URL(string: fullscreenAdFormat.rawValue) else {
-            print("Failed to show fullscreen ad due to invalid creative URL.")
+            if #available(iOS 12.0, *) {
+                os_log(.error, log: log, "Failed to show fullscreen ad due to invalid creative URL.")
+            }
             delegate?.onAdShowFailed(nil)
             return
         }
