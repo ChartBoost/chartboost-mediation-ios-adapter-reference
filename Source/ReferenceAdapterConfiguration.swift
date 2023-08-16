@@ -4,18 +4,23 @@
 // license that can be found in the LICENSE file.
 
 import Foundation
+import os.log
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
 /// A list of externally configurable properties pertaining to the partner SDK that can be retrieved and set by publishers.
 @objc public class ReferenceAdapterConfiguration: NSObject {
     
+    private static let log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Configuration")
+
     /// Flag that can optionally be set to enable the partner's test mode.
     /// Disabled by default.
     @objc public static var testMode: Bool = false {
         didSet {
             ReferenceSdk.setTestMode(enabled: testMode)
-            print("Reference SDK test mode set to \(testMode)")
+            if #available(iOS 12.0, *) {
+                os_log(.debug, log: log, "Reference SDK test mode set to %{public}s", "\(testMode)")
+            }
         }
     }
     
@@ -24,7 +29,9 @@ import Foundation
     @objc public static var verboseLogging: Bool = false {
         didSet {
             ReferenceSdk.setVerboseLogging(enabled: verboseLogging)
-            print("Reference SDK verbose logging set to \(verboseLogging)")
+            if #available(iOS 12.0, *) {
+                os_log(.debug, log: log, "Reference SDK verbose logging set to %{public}s", "\(verboseLogging)")
+            }
         }
     }
     
