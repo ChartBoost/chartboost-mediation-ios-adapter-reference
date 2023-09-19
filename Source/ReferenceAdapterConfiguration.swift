@@ -34,6 +34,20 @@ import os.log
             }
         }
     }
-    
+
+    /// Flag that can optionally be set to force the Reference SDK to return oversized banner ads for testing purposes.
+    /// Disabled by default.
+    @objc public static var oversizedBannerAds: Bool {
+        get {
+            ReferenceAdapterBannerAd.oversizedBannerAds
+        }
+        set {
+            ReferenceAdapterBannerAd.oversizedBannerAds = newValue
+            if #available(iOS 12.0, *) {
+                os_log(.debug, log: log, "Reference SDK oversized banner ads set to %{public}s", "\(newValue)")
+            }
+        }
+    }
+
     /// Append any other properties that publishers can configure.
 }

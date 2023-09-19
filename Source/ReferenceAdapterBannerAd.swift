@@ -10,7 +10,10 @@ import Foundation
 ///
 /// The Chartboost Mediation Reference adapter banner ad.
 final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
-    
+
+    /// Flag that can optionally be set to force the adapter to return oversized banner ads for testing purposes.
+    static var oversizedBannerAds = false
+
     /// The partner ad view to display inline. E.g. a banner view.
     /// Should be nil for full-screen ads.
     var inlineView: UIView?
@@ -35,10 +38,18 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Chartboost Mediation.
         ad.load(adm: request.adm)
         
+        // Specify completion partner details.
+        // These are optional. Here we include adaptive banner information for testing purposes.
+        // If your SDK does not support adaptive banners you shouldn't have to do this.
+        let partnerDetails = [
+            "bannerWidth": "\(ad.size.cgSize.width + (Self.oversizedBannerAds ? 10 : 0))",
+            "bannerHeight": "\(ad.size.cgSize.height + (Self.oversizedBannerAds ? 10 : 0))",
+            "bannerType": "0"   // 0 = fixed size banner, 1 = adaptive banner
+        ]
         // For simplicity, the current implementation always assumes successes.
-        completion(.success([:]))
+        completion(.success(partnerDetails))
     }
-    
+
     /// Shows a loaded ad.
     /// It will never get called for banner ads. You may leave the implementation blank for that ad format.
     /// - parameter viewController: The view controller on which the ad will be presented on.
