@@ -39,10 +39,10 @@ import os.log
     /// Disabled by default.
     @objc public static var oversizedBannerAds: Bool {
         get {
-            ReferenceAdapterBannerAd.enableOversizedAds
+            ReferenceAdapterBannerAd.oversizedBannerAds
         }
         set {
-            ReferenceAdapterBannerAd.enableOversizedAds = newValue
+            ReferenceAdapterBannerAd.oversizedBannerAds = newValue
             if #available(iOS 12.0, *) {
                 os_log(.debug, log: log, "Reference SDK oversized banner ads set to %{public}s", "\(newValue)")
             }
