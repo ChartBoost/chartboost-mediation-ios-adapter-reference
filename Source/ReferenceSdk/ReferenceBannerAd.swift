@@ -53,6 +53,14 @@ class ReferenceBannerAd: UIView {
         case banner = "https://chartboost.s3.amazonaws.com/helium/creatives/creative-320x50.png"
         case leaderboard = "https://chartboost.s3.amazonaws.com/helium/creatives/creative-728x90.png"
         case mediumRectangle = "https://chartboost.s3.amazonaws.com/helium/creatives/creative-300x250.png"
+
+        var cgSize: CGSize {
+            switch self {
+            case .banner: return IABStandardAdSize
+            case .leaderboard: return IABLeaderboardAdSize
+            case .mediumRectangle: return IABMediumAdSize
+            }
+        }
     }
     
     /// Attempt to load a banner ad.
