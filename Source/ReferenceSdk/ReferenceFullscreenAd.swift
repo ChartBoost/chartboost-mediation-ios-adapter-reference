@@ -11,14 +11,18 @@ import os.log
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.
 /// Do NOT copy.
-class ReferenceFullscreenAd {
-    
+class ReferenceFullscreenAd: NSObject {
+
     /// Enumeration of the Reference fullscreen ad formats.
     enum FullscreenAdFormat: String {
         case interstitial = "https://chartboost.s3.amazonaws.com/helium/creatives/creative-320x480.png"
         case rewarded = "https://chartboost.s3.amazonaws.com/helium/creatives/cbvideoad-portrait.mp4"
     }
-    
+
+    /// Time interval to wait before auto-dismissing shown ads.
+    /// Auto-dismiss is disabled if the value is `nil`.
+    static var autoDismissAdsDelay: TimeInterval?
+
     /// The current placement name
     let placement: String
     
@@ -63,7 +67,16 @@ class ReferenceFullscreenAd {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
             let viewController = UIApplication.shared.keyWindow?.rootViewController
             let browser = SFSafariViewController(url: url)
-            viewController?.present(browser, animated: true)
+            browser.delegate = self
+            viewController?.present(browser, animated: true) {
+                // Auto-dismiss ad if enabled
+                if let delay = Self.autoDismissAdsDelay {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self, weak browser] in
+                        browser?.dismiss(animated: true)
+                        self?.delegate?.onAdDismissed()   // `safariViewControllerDidFinish(_:)` doesn't get called when dismissing the browser programmatically
+                    }
+                }
+            }
         }
         
         /// For simplicity, this implementation fires all completion handlers after a small delay.
@@ -72,8 +85,14 @@ class ReferenceFullscreenAd {
             delegate?.onAdImpression()
             delegate?.onAdClicked()
             delegate?.onAdRewarded()
-            delegate?.onAdDismissed()
         }
+    }
+}
+
+extension ReferenceFullscreenAd: SFSafariViewControllerDelegate {
+
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        delegate?.onAdDismissed()
     }
 }
 
