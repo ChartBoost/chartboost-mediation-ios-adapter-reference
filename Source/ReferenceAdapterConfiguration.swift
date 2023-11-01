@@ -49,5 +49,19 @@ import os.log
         }
     }
 
+    /// Flag that can optionally be set to indicate the time interval to wait before auto-dismissing shown ads.
+    /// Auto-dismiss is disabled if the value is `nil`, which is the default.
+    public static var autoDismissFullscreenAdsDelay: TimeInterval? {
+        get {
+            ReferenceFullscreenAd.autoDismissAdsDelay
+        }
+        set {
+            ReferenceFullscreenAd.autoDismissAdsDelay = newValue
+            if #available(iOS 12.0, *) {
+                os_log(.debug, log: log, "Reference SDK auto-dismiss fullscreen ads delay set to %{public}s", "\(newValue?.description ?? "nil")")
+            }
+        }
+    }
+
     /// Append any other properties that publishers can configure.
 }
