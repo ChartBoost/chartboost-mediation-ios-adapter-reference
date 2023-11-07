@@ -113,7 +113,7 @@ final class ReferenceAdapter: PartnerAdapter {
     func makeAd(request: PartnerAdLoadRequest, delegate: PartnerAdDelegate) throws -> PartnerAd {
         // Here you must create a PartnerAd object and return it or throw an error.
         // You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
-        
+        // DO NOT MERGE
         switch request.format {
         case .interstitial, .rewarded:
             return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
