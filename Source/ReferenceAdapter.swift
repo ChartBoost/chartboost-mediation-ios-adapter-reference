@@ -26,7 +26,10 @@ final class ReferenceAdapter: PartnerAdapter {
     
     /// The human-friendly partner name.
     let partnerDisplayName = "Reference"
-    
+
+    /// Ad storage managed by Chartboost Mediation SDK.
+    let storage: PartnerAdapterStorage
+
     /// The designated initializer for the adapter.
     /// Chartboost Mediation SDK will use this constructor to create instances of conforming types.
     /// - parameter storage: An object that exposes storage managed by the Chartboost Mediation SDK to the adapter.
@@ -34,6 +37,7 @@ final class ReferenceAdapter: PartnerAdapter {
     init(storage: PartnerAdapterStorage) {
         // Perform any initialization tasks that are needed prior to setUp() here.
         // You may keep a reference to `storage` and use it later to gather some information from previously created ads.
+        self.storage = storage
     }
     
     /// Does any setup needed before beginning to load ads.
@@ -114,6 +118,17 @@ final class ReferenceAdapter: PartnerAdapter {
         // Here you must create a PartnerAd object and return it or throw an error.
         // You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
         
+        // Prevent multiple loads for the same partner placement.
+        // Some partner SDKs don't allow that, and this is how you can avoid attempting to double-load a placement.
+        // Banner loads are allowed so a banner prefetch can happen during auto-refresh.
+        // ChartboostMediationSDK 4.x does not support loading more than 2 banners with the same placement, and the partner may or may not support it.
+        guard !storage.ads.contains(where: { $0.request.partnerPlacement == request.partnerPlacement })
+            || request.format == .banner
+        else {
+            log("Failed to load ad for already loading placement \(request.partnerPlacement)")
+            throw error(.loadFailureLoadInProgress)
+        }
+
         switch request.format {
         case .interstitial, .rewarded:
             return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
