@@ -28,7 +28,7 @@ An adapter must expose a class that conforms to the `PartnerAdapter` protocol. `
 <br>
 
 ### PartnerAdapter protocol
-#### adatperVersion
+#### adapterVersion
 If you're not clear on our versioning scheme after reading the code comment for `adapterVersion`, take a look at some other adapters and look at how the adapter version number includes the partner's SDK version number. One edge case to be aware of: although most partner SDKs use a three part version (1.2.3) some have a fourth number (1.2.3.4). In that case, we include it which results in an adapter version number is one section longer than usual (4.1.2.3.4.0)
 
 #### partnerIdentifier
