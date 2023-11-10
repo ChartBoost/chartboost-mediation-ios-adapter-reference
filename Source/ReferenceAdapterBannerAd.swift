@@ -23,11 +23,19 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
     /// - parameter completion: Closure to be performed once the ad has been loaded.
     func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
         log(.loadStarted)
-        
+
+        guard let requestedSize = request.size,
+              let bannerSize = getReferenceBannerAdSize(size: fixedBannerSize(for: requestedSize)) else {
+            let error = error(.loadFailureInvalidBannerSize)
+            log(.loadFailed(error))
+            completion(.failure(error))
+            return
+        }
+
         // Construct a Reference banner ad object as well as the partner ad to be persisted for subsequent ad operations.
         let ad = ReferenceBannerAd(
             placement: request.partnerPlacement,
-            size: getReferenceBannerAdSize(size: request.size),
+            size: bannerSize,
             viewController: viewController
         )
         ad.delegate = self
@@ -46,7 +54,7 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
             "bannerHeight": "\(ad.size.cgSize.height + (Self.oversizedBannerAds ? 10 : 0))",
             "bannerType": "0"   // 0 = fixed size banner, 1 = adaptive banner
         ]
-        // For simplicity, the current implementation always assumes successes.
+        // For simplicity, the current implementation always assumes success after this point.
         completion(.success(partnerDetails))
     }
 
@@ -58,22 +66,38 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         // no-op
     }
     
-    /// Map Chartboost Mediation's banner sizes to the Reference SDK's supported sizes.
+    /// Map the requested size to one of the Reference SDK's supported sizes.
     /// - Parameter size: The Chartboost Mediation's banner size.
     /// - Returns: The corresponding Reference banner size.
-    func getReferenceBannerAdSize(size: CGSize?) -> ReferenceBannerAd.Size {
-        let height = size?.height ?? 50
-        
-        switch height {
-        case 50..<89:
+    private func getReferenceBannerAdSize(size: CGSize?) -> ReferenceBannerAd.Size? {
+        switch size {
+        case IABStandardAdSize:
             return ReferenceBannerAd.Size.banner
-        case 90..<249:
+        case IABMediumAdSize:
             return ReferenceBannerAd.Size.leaderboard
-        case 250...:
+        case IABLeaderboardAdSize:
             return ReferenceBannerAd.Size.mediumRectangle
         default:
-            return ReferenceBannerAd.Size.banner
+            // Not a standard IAB size
+            return nil
         }
+    }
+
+    /// Some partner SDKs support adaptive banners, which allow publishers to request an ad with custom dimensions.
+    /// If our `ReferenceSdk` supported this, we could simply pass the requested dimensions to it, but since it doesn't
+    /// we will see if the requested size fits within one of the standard sizes we can support.
+    private func fixedBannerSize(for requestedSize: CGSize) -> CGSize? {
+        let sizes = [IABLeaderboardAdSize, IABMediumAdSize, IABStandardAdSize]
+        // Find the largest size that can fit in the requested size.
+        for size in sizes {
+            // If height is 0, the pub has requested an ad of any height, so only the width matters.
+            if requestedSize.width >= size.width &&
+                (size.height == 0 || requestedSize.height >= size.height) {
+                return size
+            }
+        }
+        // The requested size cannot fit any fixed size banners.
+        return nil
     }
 }
 

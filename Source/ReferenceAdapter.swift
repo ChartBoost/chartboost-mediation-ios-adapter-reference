@@ -135,9 +135,13 @@ final class ReferenceAdapter: PartnerAdapter {
         case .banner:
             return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
         default:
-            // Not using the `.rewardedInterstitial` case directly to maintain backward compatibility with Chartboost Mediation 4.0
+            // Not using the `.rewardedInterstitial` or `.adaptiveBanner` cases directly to maintain backward compatibility with Chartboost Mediation 4.0
             if request.format.rawValue == "rewarded_interstitial" {
                 return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
+            } else if request.format.rawValue == "adaptive_banner" {
+                // ReferenceSDK does not support adaptive banners, but we will still attempt to load
+                // a banner that fits the requested dimensions.
+                return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
             } else {
                 throw error(.loadFailureUnsupportedAdFormat)
             }
