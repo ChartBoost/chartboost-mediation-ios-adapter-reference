@@ -27,7 +27,7 @@ pod 'ChartboostMediationAdapterReference'
 2. Implement `var partnerSDKVersion: String { get }` to return the version number of the partner SDK. Most adapters fetch this from the partner SDK's API so the adapter always reports the correct version even if the SDK version has changed.
 3. Implement `var adapterVersion: String { get }` to return the version number of the mediation adapter. The adapter version format is `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>`.  
 `<Partner build version>` is optional, and omitted by most partners.
-For example, if this adapter is compatible with Helium SDK 4.x and partner SDK 1.2.3.[4], and this is its initial release, then `adapterVersion` is 4.1.2.3.[4].0.
+For example, if this adapter is compatible with Chartboost Mediation SDK 4.x and partner SDK 1.2.3.[4], and this is its initial release, then `adapterVersion` is 4.1.2.3.[4].0.
 4. Implement `var partnerIdentifier: String { get }` with the internal identifier that the Chartboost Mediation SDK can use to refer to the current partner. Must match the value used on the Chartboost Mediation dashboard.
 5. Implement `var partnerDisplayName: String { get }` to return the partner name as it should appear in text.
 6. Implement `func setGDPR(applies: Bool?, status: GDPRConsentStatus)`,  
