@@ -1,6 +1,6 @@
 # Chartboost Mediation Reference Adapter
 
-The Chartboost Mediation Reference adapter showcases the integration with mediation APIs of the Chartboost Mediation SDK, for reference and testing purposes only.
+The Chartboost Mediation Reference adapter showcases the integration with the API of the Chartboost Mediation SDK, for reference and testing purposes only.
 
 ## Minimum Requirements
 
@@ -25,11 +25,11 @@ pod 'ChartboostMediationAdapterReference'
 
 1. Create a new class that conforms to Chartboost Mediation's `PartnerAdapter` protocol.
 2. Implement `var partnerSDKVersion: String { get }` to return the version number of the partner SDK. Most adapters fetch this from the partner SDK's API so the adapter always reports the correct version even if the SDK version has changed.
-3. Implement `var adapterVersion: String { get }` to return the version number of the mediation adapter. The adapter version format is `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>`.  
+3. Implement `var adapterVersion: String { get }` to return the version number of the Mediation adapter. The adapter version format is `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>`.  
 `<Partner build version>` is optional, and omitted by most partners.
 For example, if this adapter is compatible with Chartboost Mediation SDK 4.x and partner SDK 1.2.3.[4], and this is its initial release, then `adapterVersion` is 4.1.2.3.[4].0.
 4. Implement `var partnerIdentifier: String { get }` with the internal identifier that the Chartboost Mediation SDK can use to refer to the current partner. Must match the value used on the Chartboost Mediation dashboard.
-5. Implement `var partnerDisplayName: String { get }` to return the partner name as it should appear in text.
+5. Implement `var partnerDisplayName: String { get }`, the human readable partner name.
 6. Implement `func setGDPR(applies: Bool?, status: GDPRConsentStatus)`,  
 `func setCCPA(hasGivenConsent: Bool, privacyString: String)`,  
 and `func setCOPPA(isChildDirected: Bool)`,  
@@ -88,7 +88,7 @@ default:
         throw error(.loadFailureUnsupportedAdFormat)
     }
 ```
-12. On the Chartboost Mediation web dashboard, add your full adapter class name so your mediation adapter and partner SDK can be initialized and interacted with for ad serving purposes.  
+12. On the Chartboost Mediation web dashboard, add your full adapter class name so your Mediation adapter and partner SDK can be initialized and interacted with for ad serving purposes.  
 
 13. If your SDK has configuration features that publishers need access to, make them available via a class called `[YourNetwork]AdapterConfiguration` that exposes public properties or methods.
 
