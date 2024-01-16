@@ -55,7 +55,7 @@ class ReferenceFullscreenAd: NSObject {
     /// Attempt to show the currently loaded fullscreen ad.
     func show() {
         /// Show the ad as a webpage via an SFSafariViewController
-        guard let url = URL(string: fullscreenAdFormat.rawValue) else {
+        guard let url = URL(unsafeString: fullscreenAdFormat.rawValue) else {
             if #available(iOS 12.0, *) {
                 os_log(.error, log: log, "Failed to show fullscreen ad due to invalid creative URL.")
             }
