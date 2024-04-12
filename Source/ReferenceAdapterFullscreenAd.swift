@@ -31,7 +31,7 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
         /// Construct a fullscreen ad object as well as the partner ad to be persisted for subsequent ad operations.
         let ad = ReferenceFullscreenAd(
             placement: request.partnerPlacement,
-            adFormat: request.format == .interstitial ? .interstitial : .rewarded
+            adFormat: request.format == PartnerAdFormats.interstitial ? .interstitial : .rewarded
         )
         ad.delegate = self
         
