@@ -22,7 +22,7 @@ final class ReferenceAdapter: PartnerAdapter {
     let adapterVersion = "4.1.0.0.2"
     
     /// The partner's unique identifier.
-    let partnerIdentifier = "reference"
+    let partnerID = "reference"
     
     /// The human-friendly partner name.
     let partnerDisplayName = "Reference"
@@ -43,7 +43,7 @@ final class ReferenceAdapter: PartnerAdapter {
     /// Does any setup needed before beginning to load ads.
     /// - parameter configuration: Configuration data for the adapter to set up.
     /// - parameter completion: Closure to be performed by the adapter when it's done setting up. It should include an error indicating the cause for failure or `nil` if the operation finished successfully.
-    func setUp(with configuration: PartnerConfiguration, completion: @escaping (Error?) -> Void) {
+    func setUp(with configuration: PartnerConfiguration, completion: @escaping (Result<PartnerDetails, Error>) -> Void) {
         // Implement this method to initialize the partner SDK so that it's ready to request and display ads.
         // For simplicity, the current implementation always assumes successes.
         
@@ -51,14 +51,14 @@ final class ReferenceAdapter: PartnerAdapter {
         
         ReferenceSdk.setUp {
             self.log(.setUpSucceded)
-            completion(nil)
+            completion(.success([:]))
         }
     }
     
     /// Fetches bidding tokens needed for the partner to participate in an auction.
     /// - parameter request: Information about the ad load request.
     /// - parameter completion: Closure to be performed with the fetched info.
-    func fetchBidderInformation(request: PreBidRequest, completion: @escaping ([String : String]?) -> Void) {
+    func fetchBidderInformation(request: PartnerAdPreBidRequest, completion: @escaping (Result<[String : String], Error>) -> Void) {
         // Implement this method to compute and return a bid token for the bid request.
         
         log(.fetchBidderInfoStarted(request))
@@ -66,7 +66,7 @@ final class ReferenceAdapter: PartnerAdapter {
         let token = ReferenceSdk.getBidToken()
         
         log(.fetchBidderInfoSucceeded(request))
-        completion(["token": token])
+        completion(.success(["token": token]))
     }
     
     /// Indicates if GDPR applies or not and the user's GDPR consent status.
@@ -123,24 +123,20 @@ final class ReferenceAdapter: PartnerAdapter {
         // Banner loads are allowed so a banner prefetch can happen during auto-refresh.
         // ChartboostMediationSDK 4.x does not support loading more than 2 banners with the same placement, and the partner may or may not support it.
         guard !storage.ads.contains(where: { $0.request.partnerPlacement == request.partnerPlacement })
-            || request.format == .banner
+            || request.format == PartnerAdFormats.banner
+            || request.format == PartnerAdFormats.adaptiveBanner
         else {
             log("Failed to load ad for already loading placement \(request.partnerPlacement)")
             throw error(.loadFailureLoadInProgress)
         }
 
         switch request.format {
-        case .interstitial, .rewarded:
+        case PartnerAdFormats.interstitial, PartnerAdFormats.rewarded, PartnerAdFormats.rewardedInterstitial:
             return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
-        case .banner:
+        case PartnerAdFormats.banner:
             return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
         default:
-            // Not using the `.rewardedInterstitial` case directly to maintain backward compatibility with Chartboost Mediation 4.0
-            if request.format.rawValue == "rewarded_interstitial" {
-                return ReferenceAdapterFullscreenAd(adapter: self, request: request, delegate: delegate)
-            } else {
-                throw error(.loadFailureUnsupportedAdFormat)
-            }
+            throw error(.loadFailureUnsupportedAdFormat)
         }
     }
 }

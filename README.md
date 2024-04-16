@@ -28,7 +28,7 @@ pod 'ChartboostMediationAdapterReference'
 3. Implement `var adapterVersion: String { get }` to return the version number of the Mediation adapter. The adapter version format is `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>`.  
 `<Partner build version>` is optional, and omitted by most partners.
 For example, if this adapter is compatible with Chartboost Mediation SDK 4.x and partner SDK 1.2.3.[4], and this is its initial release, then `adapterVersion` is 4.1.2.3.[4].0.
-4. Implement `var partnerIdentifier: String { get }` with the internal identifier that the Chartboost Mediation SDK can use to refer to the current partner. Must match the value used on the Chartboost Mediation dashboard.
+4. Implement `var partnerID: String { get }` with the internal identifier that the Chartboost Mediation SDK can use to refer to the current partner. Must match the value used on the Chartboost Mediation dashboard.
 5. Implement `var partnerDisplayName: String { get }`, the human readable partner name.
 6. Implement `func setGDPR(applies: Bool?, status: GDPRConsentStatus)`,  
 `func setCCPA(hasGivenConsent: Bool, privacyString: String)`,  
@@ -55,10 +55,10 @@ If bidding is not supported by your SDK, just call `completion(nil)`.
     The lifecycle events delegate.  
     - `var inlineView: UIView? { get }`  
     View for displaying banner ads. Not used for other ad types.  
-    - `func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void)`  
+    - `func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerDetails, Error>) -> Void)`  
     Instantiate an ad from your network's SDK. If your SDK expects an ADM from a bid response to construct an ad, it will be in `request.adm`. For non-bidding ads, the placement ID will be available in `request.partnerPlacement`.
     Call the completion after loading to indicate success or failure.  
-    - `func show(with viewController: UIViewController, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void)`  
+    - `func show(with viewController: UIViewController, completion: @escaping (Result<PartnerDetails, Error>) -> Void)`  
     Show the loaded ad and then call the show completion closure. Never used on banner ads.  
     - `func invalidate() throws`  
     Called by the SDK before disposing of an ad. There's a no-op default implementation and most adapters don't implement their own because no special cleanup is necessary for their ads.  
@@ -66,15 +66,15 @@ If bidding is not supported by your SDK, just call `completion(nil)`.
     Most adapters implement more than one ad type (i.e. [YourNetwork]BannerAd, [YourNetwork]InterstitialAd, etc). In that case, you can move some of the things required by `PartnerAd` into a parent class to reduce duplicated code. In this repo, you can see how `ReferenceAdapterAd` holds the `init` function and several properties that don't differ between subclasses.  
     
     Each `PartnerAd` also needs to store the `PartnerAdDelegate` that Chartboost Mediation SDK will pass to `makeAd`, and call the following delegate methods to report your ad lifecycle events:  
-    - `func didTrackImpression(_ ad: PartnerAd, details: PartnerEventDetails)`  
+    - `func didTrackImpression(_ ad: PartnerAd, details: PartnerDetails)`  
     Call when the partner SDK registers an impression for the currently showing ad.  
-    - `func didClick(_ ad: PartnerAd, details: PartnerEventDetails)`  
+    - `func didClick(_ ad: PartnerAd, details: PartnerDetails)`  
     Call when the partner ad has been clicked as the result of a user action.  
-    - `func didReward(_ ad: PartnerAd, details: PartnerEventDetails)`  
+    - `func didReward(_ ad: PartnerAd, details: PartnerDetails)`  
     Call when a reward has been given for watching a video ad.  
-    - `func didDismiss(_ ad: PartnerAd, details: PartnerEventDetails, error: Error?)`  
+    - `func didDismiss(_ ad: PartnerAd, details: PartnerDetails, error: Error?)`  
     Call when the partner ad has been dismissed as the result of a user action.  
-    - `func didExpire(_ ad: PartnerAd, details: PartnerEventDetails)`  
+    - `func didExpire(_ ad: PartnerAd, details: PartnerDetails)`  
     Call when the partner ad has expired as determined by the partner SDK.  
 11. Implement `func makeAd(request: PartnerAdLoadRequest, delegate: PartnerAdDelegate) throws -> PartnerAd`, which returns your `PartnerAd`-conforming objects.
 If you are writing an adapter for Chartboost Mediation 4.x, and your adapter supports Adaptive Banners or Rewarded Interstitials, you'll need to check for those within the `default` clause, to maintain backward compatibility.

@@ -18,10 +18,14 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
     /// Should be nil for full-screen ads.
     var inlineView: UIView?
     
+    /// The loaded partner ad banner size.
+    /// Should be `nil` for full-screen ads.
+    var bannerSize: PartnerBannerSize?
+    
     /// Loads an ad.
     /// - parameter viewController: The view controller on which the ad will be presented on. Needed on load for some banners.
     /// - parameter completion: Closure to be performed once the ad has been loaded.
-    func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
+    func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerDetails, Error>) -> Void) {
         log(.loadStarted)
         
         // Construct a Reference banner ad object as well as the partner ad to be persisted for subsequent ad operations.
@@ -38,23 +42,21 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Chartboost Mediation.
         ad.load(adm: request.adm)
         
-        // Specify completion partner details.
-        // These are optional. Here we include adaptive banner information for testing purposes.
-        // If your SDK does not support adaptive banners you shouldn't have to do this.
-        let partnerDetails = [
-            "bannerWidth": "\(ad.size.cgSize.width + (Self.oversizedBannerAds ? 10 : 0))",
-            "bannerHeight": "\(ad.size.cgSize.height + (Self.oversizedBannerAds ? 10 : 0))",
-            "bannerType": "0"   // 0 = fixed size banner, 1 = adaptive banner
-        ]
+        // Specify loaded banner size
+        let loadedSize = CGSize(
+            width: ad.size.cgSize.width + (Self.oversizedBannerAds ? 10 : 0),
+            height: ad.size.cgSize.height + (Self.oversizedBannerAds ? 10 : 0)
+        )
+        bannerSize = PartnerBannerSize(size: loadedSize, type: .fixed)
         // For simplicity, the current implementation always assumes successes.
-        completion(.success(partnerDetails))
+        completion(.success([:]))
     }
 
     /// Shows a loaded ad.
     /// It will never get called for banner ads. You may leave the implementation blank for that ad format.
     /// - parameter viewController: The view controller on which the ad will be presented on.
     /// - parameter completion: Closure to be performed once the ad has been shown.
-    func show(with viewController: UIViewController, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
+    func show(with viewController: UIViewController, completion: @escaping (Result<PartnerDetails, Error>) -> Void) {
         // no-op
     }
     

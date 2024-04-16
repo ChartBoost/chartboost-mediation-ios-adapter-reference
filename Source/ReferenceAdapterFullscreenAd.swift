@@ -14,20 +14,24 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
     /// The partner ad view to display inline. E.g. a banner view.
     /// Should be nil for full-screen ads.
     var inlineView: UIView? { nil }
-    
+
+    /// The loaded partner ad banner size.
+    /// Should be `nil` for full-screen ads.
+    var bannerSize: PartnerBannerSize? { nil }
+
     /// The ReferenceSDK ad instance.
     var ad: ReferenceFullscreenAd?
     
     /// Loads an ad.
     /// - parameter viewController: The view controller on which the ad will be presented on. Needed on load for some banners.
     /// - parameter completion: Closure to be performed once the ad has been loaded.
-    func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
+    func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerDetails, Error>) -> Void) {
         log(.loadStarted)
                 
         /// Construct a fullscreen ad object as well as the partner ad to be persisted for subsequent ad operations.
         let ad = ReferenceFullscreenAd(
             placement: request.partnerPlacement,
-            adFormat: request.format == .interstitial ? .interstitial : .rewarded
+            adFormat: request.format == PartnerAdFormats.interstitial ? .interstitial : .rewarded
         )
         ad.delegate = self
         
@@ -46,7 +50,7 @@ final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
     /// It will never get called for banner ads. You may leave the implementation blank for that ad format.
     /// - parameter viewController: The view controller on which the ad will be presented on.
     /// - parameter completion: Closure to be performed once the ad has been shown.
-    func show(with viewController: UIViewController, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
+    func show(with viewController: UIViewController, completion: @escaping (Result<PartnerDetails, Error>) -> Void) {
         log(.showStarted)
         
         guard let ad = ad else {
