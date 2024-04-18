@@ -9,15 +9,7 @@ import Foundation
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
 /// The Chartboost Mediation Reference adapter fullscreen ad.
-final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
-    
-    /// The partner ad view to display inline. E.g. a banner view.
-    /// Should be nil for full-screen ads.
-    var inlineView: UIView? { nil }
-
-    /// The loaded partner ad banner size.
-    /// Should be `nil` for full-screen ads.
-    var bannerSize: PartnerBannerSize? { nil }
+final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerFullscreenAd {
 
     /// The ReferenceSDK ad instance.
     var ad: ReferenceFullscreenAd?

@@ -9,18 +9,16 @@ import Foundation
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
 /// The Chartboost Mediation Reference adapter banner ad.
-final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
+final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerBannerAd {
 
     /// Flag that can optionally be set to force the adapter to return oversized banner ads for testing purposes.
     static var oversizedBannerAds = false
 
-    /// The partner ad view to display inline. E.g. a banner view.
-    /// Should be nil for full-screen ads.
-    var inlineView: UIView?
-    
+    /// The partner banner ad view to display.
+    var view: UIView?
+
     /// The loaded partner ad banner size.
-    /// Should be `nil` for full-screen ads.
-    var bannerSize: PartnerBannerSize?
+    var size: PartnerBannerSize?
     
     /// Loads an ad.
     /// - parameter viewController: The view controller on which the ad will be presented on. Needed on load for some banners.
@@ -36,9 +34,9 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         )
         ad.delegate = self
         
-        // Set the inlineView so Chartboost Mediation SDK can lay out the ReferenceBannerAd properly
-        self.inlineView = ad
-        
+        // Set the view so Chartboost Mediation SDK can lay out the ReferenceBannerAd properly
+        self.view = ad
+
         // Load the Reference banner ad with the given ad markup, if any, and subscribe to impression and click callbacks in order to notify Chartboost Mediation.
         ad.load(adm: request.adm)
         
@@ -47,7 +45,7 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
             width: ad.size.cgSize.width + (Self.oversizedBannerAds ? 10 : 0),
             height: ad.size.cgSize.height + (Self.oversizedBannerAds ? 10 : 0)
         )
-        bannerSize = PartnerBannerSize(size: loadedSize, type: .fixed)
+        size = PartnerBannerSize(size: loadedSize, type: .fixed)
         // For simplicity, the current implementation always assumes successes.
         completion(.success([:]))
     }
