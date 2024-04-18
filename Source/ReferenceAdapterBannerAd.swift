@@ -31,7 +31,7 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
         // Construct a Reference banner ad object as well as the partner ad to be persisted for subsequent ad operations.
         let ad = ReferenceBannerAd(
             placement: request.partnerPlacement,
-            size: getReferenceBannerAdSize(size: request.size),
+            size: getReferenceBannerAdSize(from: request.bannerSize),
             viewController: viewController
         )
         ad.delegate = self
@@ -63,8 +63,8 @@ final class ReferenceAdapterBannerAd: ReferenceAdapterAd, PartnerAd {
     /// Map Chartboost Mediation's banner sizes to the Reference SDK's supported sizes.
     /// - Parameter size: The Chartboost Mediation's banner size.
     /// - Returns: The corresponding Reference banner size.
-    func getReferenceBannerAdSize(size: CGSize?) -> ReferenceBannerAd.Size {
-        let height = size?.height ?? 50
+    func getReferenceBannerAdSize(from requestedSize: BannerSize?) -> ReferenceBannerAd.Size {
+        let height = requestedSize?.size.height ?? 50
         
         switch height {
         case 50..<89:
