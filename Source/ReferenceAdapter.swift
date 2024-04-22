@@ -119,7 +119,7 @@ final class ReferenceAdapter: PartnerAdapter {
     func makeBannerAd(request: PartnerAdLoadRequest, delegate: PartnerAdDelegate) throws -> PartnerBannerAd {
         // Here you must create a PartnerBannerAd object and return it or throw an error.
         // You'll have to define your custom type that conforms to PartnerAd. Depending on how you organize your code you may have one single PartnerAdapter type, or multiple ones depending on ad format.
-        return ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
+        ReferenceAdapterBannerAd(adapter: self, request: request, delegate: delegate)
     }
 
     /// Creates a new ad object in charge of communicating with a single partner SDK ad instance.
