@@ -69,42 +69,34 @@ final class ReferenceAdapter: PartnerAdapter {
         completion(.success(["token": token]))
     }
     
-    /// Indicates if GDPR applies or not and the user's GDPR consent status.
-    /// - parameter applies: `true` if GDPR applies, `false` if not, `nil` if the publisher has not provided this information.
-    /// - parameter status: One of the `GDPRConsentStatus` values depending on the user's preference.
-    func setGDPR(applies: Bool?, status: GDPRConsentStatus) {
-        // Implement this method to notify your partner SDK of the GDPR consent status as determined by the Chartboost Mediation SDK.
-        // The current implementation merely logs the GDPR consent status.
-        
-        guard applies == true else { return }
-        
-        let consentString = status == .granted ? "YES" : "NO"
-        ReferenceSdk.consentsToTracking(consentString)
-        // Log the transformed value
-        log(.privacyUpdated(setting: "consentsToTracking", value: consentString))
+    /// Indicates that the user consent has changed.
+    /// - parameter consents: The new consents value, including both modified and unmodified consents.
+    /// - parameter modifiedKeys: A set containing all the keys that changed.
+    func setConsents(_ consents: [ConsentKey: ConsentValue], modifiedKeys: Set<ConsentKey>) {
+        // Implement this method to notify your partner SDK of the new consent info as determined by the Chartboost Mediation SDK.
+
+        if modifiedKeys.contains(partnerID) || modifiedKeys.contains(ConsentKeys.gdprConsentGiven) {
+            let consent = consents[partnerID] ?? consents[ConsentKeys.gdprConsentGiven]
+            ReferenceSdk.consentsToTracking(consent)
+            log(.privacyUpdated(setting: "consentsToTracking", value: consent))
+
+        }
+
+        if modifiedKeys.contains(ConsentKeys.ccpaOptIn) {
+            let consent = consents[ConsentKeys.ccpaOptIn]
+            ReferenceSdk.ccpaConsent(consent)
+            log(.privacyUpdated(setting: "ccpaConsent", value: consent))
+        }
     }
-    
-    /// Indicates the CCPA status both as a boolean and as an IAB US privacy string.
-    /// - parameter hasGivenConsent: A boolean indicating if the user has given consent.
-    /// - parameter privacyString: An IAB-compliant string indicating the CCPA status.
-    func setCCPA(hasGivenConsent: Bool, privacyString: String) {
-        // Implement this method to notify your partner SDK of the CCPA privacy String as supplied by the Chartboost Mediation SDK.
-        // The current implementation merely logs the CCPA consent status.
-        
-        let consent = hasGivenConsent ? "1" : nil
-        ReferenceSdk.ccpaConsent(consent)
-        // Log the transformed value
-        log(.privacyUpdated(setting: "ccpaConsent", value: consent))
-    }
-    
-    /// Indicates if the user is subject to COPPA or not.
-    /// - parameter isChildDirected: `true` if the user is subject to COPPA, `false` otherwise.
-    func setCOPPA(isChildDirected: Bool) {
+
+    /// Indicates that the user is underage signal has changed.
+    /// - parameter isUserUnderage: `true` if the user is underage as determined by the publisher, `false` otherwise.
+    func setIsUserUnderage(_ isUserUnderage: Bool) {
         // Implement this method to notify your partner SDK of the COPPA subjectivity as determined by the Chartboost Mediation SDK.
         // The current implementation merely logs the COPPA subjectivity.
-        
-        ReferenceSdk.coppaExempt(!isChildDirected)
-        log(.privacyUpdated(setting: "coppaExempt", value: !isChildDirected))
+
+        ReferenceSdk.coppaExempt(!isUserUnderage)
+        log(.privacyUpdated(setting: "coppaExempt", value: !isUserUnderage))
     }
     
     /// Creates a new banner ad object in charge of communicating with a single partner SDK ad instance.
