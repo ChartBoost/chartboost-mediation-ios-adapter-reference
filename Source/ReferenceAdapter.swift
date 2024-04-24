@@ -48,7 +48,11 @@ final class ReferenceAdapter: PartnerAdapter {
         // For simplicity, the current implementation always assumes successes.
         
         log(.setUpStarted)
-        
+
+        // Apply initial consents
+        setConsents(configuration.consents, modifiedKeys: Set(configuration.consents.keys))
+        setIsUserUnderage(configuration.isUserUnderage)
+
         ReferenceSdk.setUp {
             self.log(.setUpSucceded)
             completion(.success([:]))
