@@ -50,7 +50,7 @@ class ReferenceSdk {
     
     /// Simulate an update to GDPR consent
     /// - A string that contains either "YES" or "NO"
-    static func consentsToTracking(_ consents: String) {
+    static func consentsToTracking(_ consents: String?) {
     }
     
     /// Simulate an update to COPPA setting
