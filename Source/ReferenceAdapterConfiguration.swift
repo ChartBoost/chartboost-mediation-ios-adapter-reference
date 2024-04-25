@@ -11,6 +11,22 @@ import os.log
 /// A list of externally configurable properties pertaining to the partner SDK that can be retrieved and set by publishers.
 @objc public class ReferenceAdapterConfiguration: NSObject {
     
+    /// The version of the partner SDK.
+    @objc static var partnerSDKVersion: String {
+        ReferenceSdk.getVersion()
+    }
+
+    /// The version of the adapter.
+    /// It should have either 5 or 6 digits separated by periods, where the first digit is Chartboost Mediation SDK's major version, the last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
+    /// Format: `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
+    @objc static let adapterVersion = "4.1.0.0.2"
+
+    /// The partner's unique identifier.
+    @objc static let partnerID = "reference"
+
+    /// The human-friendly partner name.
+    @objc static let partnerDisplayName = "Reference"
+
     private static let log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Configuration")
 
     /// Flag that can optionally be set to enable the partner's test mode.

@@ -14,18 +14,26 @@ import UIKit
 final class ReferenceAdapter: PartnerAdapter {
     
     /// The version of the partner SDK.
-    let partnerSDKVersion = ReferenceSdk.getVersion()
-    
+    var partnerSDKVersion: String {
+        ReferenceAdapterConfiguration.partnerSDKVersion
+    }
+
     /// The version of the adapter.
     /// It should have either 5 or 6 digits separated by periods, where the first digit is Chartboost Mediation SDK's major version, the last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
     /// Format: `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
-    let adapterVersion = "4.1.0.0.2"
-    
+    var adapterVersion: String {
+        ReferenceAdapterConfiguration.adapterVersion
+    }
+
     /// The partner's unique identifier.
-    let partnerID = "reference"
-    
+    var partnerID: String {
+        ReferenceAdapterConfiguration.partnerID
+    }
+
     /// The human-friendly partner name.
-    let partnerDisplayName = "Reference"
+    var partnerDisplayName: String {
+        ReferenceAdapterConfiguration.partnerDisplayName
+    }
 
     /// Ad storage managed by Chartboost Mediation SDK.
     let storage: PartnerAdapterStorage
