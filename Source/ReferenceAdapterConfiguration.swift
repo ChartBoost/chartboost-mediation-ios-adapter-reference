@@ -12,20 +12,20 @@ import os.log
 @objc public class ReferenceAdapterConfiguration: NSObject {
     
     /// The version of the partner SDK.
-    @objc static var partnerSDKVersion: String {
+    @objc public static var partnerSDKVersion: String {
         ReferenceSdk.getVersion()
     }
 
     /// The version of the adapter.
     /// It should have either 5 or 6 digits separated by periods, where the first digit is Chartboost Mediation SDK's major version, the last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
     /// Format: `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.<Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
-    @objc static let adapterVersion = "4.1.0.0.2"
+    @objc public static let adapterVersion = "4.1.0.0.2"
 
     /// The partner's unique identifier.
-    @objc static let partnerID = "reference"
+    @objc public static let partnerID = "reference"
 
     /// The human-friendly partner name.
-    @objc static let partnerDisplayName = "Reference"
+    @objc public static let partnerDisplayName = "Reference"
 
     private static let log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Configuration")
 
