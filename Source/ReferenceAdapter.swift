@@ -141,7 +141,7 @@ final class ReferenceAdapter: PartnerAdapter {
         // Prevent multiple loads for the same partner placement.
         // Some partner SDKs don't allow that, and this is how you can avoid attempting to double-load a placement.
         guard !storage.ads.contains(where: { $0.request.partnerPlacement == request.partnerPlacement }) else {
-            log("Failed to load ad for already loading placement \(request.partnerPlacement)")
+            log(.skippedLoadForAlreadyLoadingPlacement(request))
             throw error(.loadFailureLoadInProgress)
         }
 
