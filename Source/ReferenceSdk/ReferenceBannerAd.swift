@@ -74,7 +74,7 @@ class ReferenceBannerAd: UIView {
         let bannerAd = WKWebView()
         addSubview(bannerAd)
         bannerAd.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        bannerAd.load(URLRequest(url: URL(string: size.rawValue)!))
+        bannerAd.load(URLRequest(url: URL(unsafeString: size.rawValue)!))
         
         // Create another view and place it on top the webview so it recognizes tap events
         let tapAreaOverlay = UIView(frame: bounds)
@@ -100,7 +100,7 @@ class ReferenceBannerAd: UIView {
     /// Perform a clickthrough to a predetermined landing page.
     @objc func clickthrough() {
         /// Show the ad as a webpage via an SFSafariViewController
-        guard let url = URL(string: clickThroughUrl) else {
+        guard let url = URL(unsafeString: clickThroughUrl) else {
             if #available(iOS 12.0, *) {
                 os_log(.error, log: log, "Failed to perform clickthrough action due to invalid destination URL.")
             }
