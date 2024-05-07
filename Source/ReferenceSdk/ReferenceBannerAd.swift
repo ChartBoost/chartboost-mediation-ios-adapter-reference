@@ -56,9 +56,9 @@ class ReferenceBannerAd: UIView {
 
         var cgSize: CGSize {
             switch self {
-            case .banner: return IABStandardAdSize
-            case .leaderboard: return IABLeaderboardAdSize
-            case .mediumRectangle: return IABMediumAdSize
+            case .banner: return BannerSize.standard.size
+            case .mediumRectangle: return BannerSize.medium.size
+            case .leaderboard: return BannerSize.leaderboard.size
             }
         }
     }
