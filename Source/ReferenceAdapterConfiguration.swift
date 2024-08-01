@@ -1,36 +1,51 @@
-// Copyright 2022-2023 Chartboost, Inc.
+// Copyright 2022-2024 Chartboost, Inc.
 //
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file.
 
+import ChartboostMediationSDK
 import Foundation
-import os.log
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
 /// A list of externally configurable properties pertaining to the partner SDK that can be retrieved and set by publishers.
-@objc public class ReferenceAdapterConfiguration: NSObject {
-    
-    private static let log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Configuration")
+@objc public class ReferenceAdapterConfiguration: NSObject, PartnerAdapterConfiguration {
+    /// The version of the partner SDK.
+    @objc public static var partnerSDKVersion: String {
+        ReferenceSdk.getVersion()
+    }
+
+    /// The version of the adapter.
+    /// It should have either 5 or 6 digits separated by periods, where the first digit is Chartboost Mediation SDK's major version, the
+    /// last digit is the adapter's build version, and intermediate digits are the partner SDK's version.
+    /// Format: `<Chartboost Mediation major version>.<Partner major version>.<Partner minor version>.<Partner patch version>.
+    /// <Partner build version>.<Adapter build version>` where `.<Partner build version>` is optional.
+    @objc public static let adapterVersion = "5.1.0.0.0"
+
+    /// The partner's unique identifier.
+    @objc public static let partnerID = "reference"
+
+    /// The human-friendly partner name.
+    @objc public static let partnerDisplayName = "Reference"
 
     /// Flag that can optionally be set to enable the partner's test mode.
     /// Disabled by default.
-    @objc public static var testMode: Bool = false {
+    @objc public static var testMode = false {
         didSet {
             ReferenceSdk.setTestMode(enabled: testMode)
             if #available(iOS 12.0, *) {
-                os_log(.debug, log: log, "Reference SDK test mode set to %{public}s", "\(testMode)")
+                log("Test mode set to \(testMode)")
             }
         }
     }
-    
+
     /// Flag that can optionally be set to enable the partner's verbose logging.
     /// Disabled by default.
-    @objc public static var verboseLogging: Bool = false {
+    @objc public static var verboseLogging = false {
         didSet {
             ReferenceSdk.setVerboseLogging(enabled: verboseLogging)
             if #available(iOS 12.0, *) {
-                os_log(.debug, log: log, "Reference SDK verbose logging set to %{public}s", "\(verboseLogging)")
+                log("Verbose logging set to \(verboseLogging)")
             }
         }
     }
@@ -44,7 +59,7 @@ import os.log
         set {
             ReferenceAdapterBannerAd.oversizedBannerAds = newValue
             if #available(iOS 12.0, *) {
-                os_log(.debug, log: log, "Reference SDK oversized banner ads set to %{public}s", "\(newValue)")
+                log("Oversized banner ads set to \(newValue)")
             }
         }
     }
@@ -58,7 +73,7 @@ import os.log
         set {
             ReferenceFullscreenAd.autoDismissAdsDelay = newValue
             if #available(iOS 12.0, *) {
-                os_log(.debug, log: log, "Reference SDK auto-dismiss fullscreen ads delay set to %{public}s", "\(newValue?.description ?? "nil")")
+                log("Auto-dismiss fullscreen ads delay set to \(newValue?.description ?? "nil")")
             }
         }
     }

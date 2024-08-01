@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Chartboost, Inc.
+// Copyright 2022-2024 Chartboost, Inc.
 //
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file.
@@ -9,89 +9,83 @@ import Foundation
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 ///
 /// The Chartboost Mediation Reference adapter fullscreen ad.
-final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerAd {
-    
-    /// The partner ad view to display inline. E.g. a banner view.
-    /// Should be nil for full-screen ads.
-    var inlineView: UIView? { nil }
-    
+final class ReferenceAdapterFullscreenAd: ReferenceAdapterAd, PartnerFullscreenAd {
     /// The ReferenceSDK ad instance.
     var ad: ReferenceFullscreenAd?
-    
+
     /// Loads an ad.
     /// - parameter viewController: The view controller on which the ad will be presented on. Needed on load for some banners.
     /// - parameter completion: Closure to be performed once the ad has been loaded.
-    func load(with viewController: UIViewController?, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
+    func load(with viewController: UIViewController?, completion: @escaping (Error?) -> Void) {
         log(.loadStarted)
-                
-        /// Construct a fullscreen ad object as well as the partner ad to be persisted for subsequent ad operations.
+
+        // Construct a fullscreen ad object as well as the partner ad to be persisted for subsequent ad operations.
         let ad = ReferenceFullscreenAd(
             placement: request.partnerPlacement,
-            adFormat: request.format == .interstitial ? .interstitial : .rewarded
+            adFormat: request.format == PartnerAdFormats.interstitial ? .interstitial : .rewarded
         )
         ad.delegate = self
-        
+
         // Keep the Reference ad alive
         self.ad = ad
-        
+
         // Load the Reference fullscreen ad.
         ad.load(adm: request.adm)
-        
+
         // For simplicity, the current implementation always assumes successes.
         log(.loadSucceeded)
-        completion(.success([:]))
+        completion(nil)
     }
-    
+
     /// Shows a loaded ad.
-    /// It will never get called for banner ads. You may leave the implementation blank for that ad format.
+    /// Chartboost Mediation SDK will always call this method from the main thread.
     /// - parameter viewController: The view controller on which the ad will be presented on.
     /// - parameter completion: Closure to be performed once the ad has been shown.
-    func show(with viewController: UIViewController, completion: @escaping (Result<PartnerEventDetails, Error>) -> Void) {
+    func show(with viewController: UIViewController, completion: @escaping (Error?) -> Void) {
         log(.showStarted)
-        
-        guard let ad = ad else {
+
+        guard let ad else {
             let error = error(.showFailureAdNotReady)
             log(.showFailed(error))
-            completion(.failure(error))
+            completion(error)
             return
         }
-        
+
         ad.show()
     }
 }
 
 extension ReferenceAdapterFullscreenAd: ReferenceFullscreenAdDelegate {
-    
     func onAdShowSuccess() {
         log(.showSucceeded)
-        showCompletion?(.success([:])) ?? log(.showResultIgnored)
+        showCompletion?(nil) ?? log(.showResultIgnored)
         showCompletion = nil
     }
-    
+
     func onAdShowFailed(_ referenceError: Error?) {
         let error = referenceError ?? self.error(.showFailureUnknown)
         log(.showFailed(error))
-        showCompletion?(.failure(error)) ?? log(.showResultIgnored)
+        showCompletion?(error) ?? log(.showResultIgnored)
         showCompletion = nil
     }
-    
+
     func onAdImpression() {
         log(.didTrackImpression)
-        delegate?.didTrackImpression(self, details: [:]) ?? log(.delegateUnavailable)
+        delegate?.didTrackImpression(self) ?? log(.delegateUnavailable)
     }
-    
+
     func onAdClicked() {
         log(.didClick(error: nil))
-        delegate?.didClick(self, details: [:]) ?? log(.delegateUnavailable)
+        delegate?.didClick(self) ?? log(.delegateUnavailable)
     }
-    
+
     func onAdRewarded() {
         log(.didReward)
-        delegate?.didReward(self, details: [:]) ?? log(.delegateUnavailable)
+        delegate?.didReward(self) ?? log(.delegateUnavailable)
     }
-    
+
     func onAdDismissed() {
         log(.didDismiss(error: nil))
-        delegate?.didDismiss(self, details: [:], error: nil) ?? log(.delegateUnavailable)
+        delegate?.didDismiss(self, error: nil) ?? log(.delegateUnavailable)
     }
 }

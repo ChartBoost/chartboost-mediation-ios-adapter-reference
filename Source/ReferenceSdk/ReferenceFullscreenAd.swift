@@ -1,18 +1,17 @@
-// Copyright 2022-2023 Chartboost, Inc.
+// Copyright 2022-2024 Chartboost, Inc.
 //
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file.
 
 import ChartboostMediationSDK
 import Foundation
-import SafariServices
 import os.log
+import SafariServices
 
 /// INTERNAL. FOR DEMO AND TESTING PURPOSES ONLY. DO NOT USE DIRECTLY.
 /// A dummy SDK designed to support the reference adapter.
 /// Do NOT copy.
 class ReferenceFullscreenAd: NSObject {
-
     /// Enumeration of the Reference fullscreen ad formats.
     enum FullscreenAdFormat: String {
         case interstitial = "https://chartboost.s3.amazonaws.com/helium/creatives/creative-320x480.png"
@@ -25,13 +24,13 @@ class ReferenceFullscreenAd: NSObject {
 
     /// The current placement name
     let placement: String
-    
+
     /// The format (interstitial or rewarded) of the fullscreen ad
     let fullscreenAdFormat: FullscreenAdFormat
-    
+
     /// The delegate for this Reference ad.
     weak var delegate: ReferenceFullscreenAdDelegate?
-        
+
     /// The log configuration.
     private lazy var log = OSLog(subsystem: "com.chartboost.mediation.adapter.reference", category: "Fullscreen")
 
@@ -43,7 +42,7 @@ class ReferenceFullscreenAd: NSObject {
         self.placement = placement
         self.fullscreenAdFormat = adFormat
     }
-    
+
     /// Attempt to load a fullscreen ad.
     /// In this example, there are no "load" and "destroy" implementations as the fullscreen ad is tied to the SFSafariViewController.
     func load(adm: String?) {
@@ -51,21 +50,21 @@ class ReferenceFullscreenAd: NSObject {
             os_log(.debug, log: log, "Loading a Reference fullscreen ad with ad markup: %{public}s", adm ?? "nil")
         }
     }
-    
+
     /// Attempt to show the currently loaded fullscreen ad.
     func show() {
-        /// Show the ad as a webpage via an SFSafariViewController
-        guard let url = URL(string: fullscreenAdFormat.rawValue) else {
+        // Show the ad as a webpage via an SFSafariViewController
+        guard let url = URL(unsafeString: fullscreenAdFormat.rawValue) else {
             if #available(iOS 12.0, *) {
                 os_log(.error, log: log, "Failed to show fullscreen ad due to invalid creative URL.")
             }
             delegate?.onAdShowFailed(nil)
             return
         }
-        
-        /// Present the VC after a small delay due to known restrictions by Apple.
+
+        // Present the VC after a small delay due to known restrictions by Apple.
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
-            let viewController = UIApplication.shared.keyWindow?.rootViewController
+            let viewController = UIApplication.topViewController()
             let browser = SFSafariViewController(url: url)
             browser.delegate = self
             viewController?.present(browser, animated: true) {
@@ -73,13 +72,14 @@ class ReferenceFullscreenAd: NSObject {
                 if let delay = Self.autoDismissAdsDelay {
                     DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self, weak browser] in
                         browser?.dismiss(animated: true)
-                        self?.delegate?.onAdDismissed()   // `safariViewControllerDidFinish(_:)` doesn't get called when dismissing the browser programmatically
+                        // `safariViewControllerDidFinish(_:)` doesn't get called when dismissing the browser programmatically
+                        self?.delegate?.onAdDismissed()
                     }
                 }
             }
         }
-        
-        /// For simplicity, this implementation fires all completion handlers after a small delay.
+
+        // For simplicity, this implementation fires all completion handlers after a small delay.
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { [self] in
             delegate?.onAdShowSuccess()
             delegate?.onAdImpression()
@@ -90,7 +90,6 @@ class ReferenceFullscreenAd: NSObject {
 }
 
 extension ReferenceFullscreenAd: SFSafariViewControllerDelegate {
-
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         delegate?.onAdDismissed()
     }
